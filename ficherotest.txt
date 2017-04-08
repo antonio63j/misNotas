@@ -1,7 +1,7 @@
 
 modificacion 16:41; modificacion 04/04-13:48 ; modificacion 07/04-17:49; modificacion despuesde un commit (sin push posterior) en el que esta incluido este fichero, 
 ---------- modificacion 07/04 22:50, modificacion despues del commit y antes de un nuevo push
-
+----- Modifificacion en ficherotest-copia.txt
 total 17
 drwxr-xr-x 1 aflucena 1049089 0 abr  3 15:56 ./
 drwxr-xr-x 1 aflucena 1049089 0 mar  6 07:47 ../
