@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+#caja1 {
+  position:relative;
+  top:100px;
+  left:20px;
+  width: 300px;
+  height:100px; 
+  padding-left:  50px;
+  padding-right: 50px;
+  margin-left:   10px;
+  margin-right:  10px;
+  border: 10px solid black;
+  padding-top: 50px;
+  background-color:green;
+}
+
+#caja2 {
+  position:relative;
+  top:-100px;
+  width: 300px;
+  height:100px;
+  padding-left:  50px;
+  padding-right: 50px;
+  margin-left:   10px;
+  margin-right:  10px;
+  border: 10px solid black;
+  margin-bottom:50px;
+  background-color:yellow;
+}
+
+#caja3 {
+  position:relative;
+  top:-50px;
+  width: 300px;
+  height:100px;
+  padding-left:  50px;
+  padding-right: 50px;
+  margin-left:   10px;
+  margin-right:  10px;
+  border: 10px solid black;
+  margin-bottom:10px;
+  background-color: blue;
+}
+
+#caja11 {
+  position:relative;
+  left:20px;
+  width: 300px;
+  height:100px;
+  padding-left:  50px;
+  padding-right: 50px;
+  margin-left:   10px;
+  margin-right:  10px;
+  border: 10px solid black;
+  margin-bottom:10px;
+  background-color:green;
+}
+
+#caja22 {
+  position:relative;
+
+  width: 50px;
+  height:100px;
+  padding-left:  50px;
+  padding-right: 50px;
+  margin-left:   10px;
+  margin-right:  10px;
+  border: 10px solid black;
+  margin-bottom:10px;
+  background-color:yellow;
+}
+
+#caja33 {
+  position:relative;
+
+  width: 50px;
+  height:100px;
+  padding-left:  50px;
+  padding-right: 50px;
+  margin-left:   10px;
+  margin-right:  10px;
+  border: 10px solid black;
+  margin-bottom:10px;
+  background-color:yellow;
+}
+
+
+</style>
+</head>
+
+
+
+<body>
+
+<div id="caja1"><h1>top:100</h1></div>
+<div id="caja2"><h1>top:-100</h1></div>
+<div id="caja3"><h1>top:-100</h1></div>
+
+<h1>El posicionamiento relativo desplaza una caja respecto de su posición original establecida mediante el posicionamiento normal. El desplazamiento de la caja se controla con las propiedades top, right, bottom y left.</h1>
+
+<div id="caja11"><h1>sin top</h1></div>
+<div id="caja22"><h1>sin top</h1></div>
+<div id="caja33"><h1>sin top</h1></div>
+
+</body>
+
+</html>

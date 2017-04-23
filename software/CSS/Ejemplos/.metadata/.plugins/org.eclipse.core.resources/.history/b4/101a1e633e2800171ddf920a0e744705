@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+
+
+#caja0 {
+  position:static;
+
+  bottom:7px;
+  width: 300px;
+  padding-left:  50px;
+  padding-right: 50px;
+  margin-left:   10px;
+  margin-right:  10px;
+  border: 10px solid black;
+  margin-bottom:10px;
+  background-color:cian;
+}
+
+
+#caja1 {
+  position:static;
+  bottom:1px;
+  left:20px;
+  width: 600px;
+  padding-left:  50px;
+  padding-right: 50px;
+  margin-left:   10px;
+  margin-right:  10px;
+  border: 10px solid black;
+  margin-bottom:10px;
+  background-color:yellow;
+}
+
+#caja2 {
+  position:static;
+  top:-110px;
+  width: 50px;
+  padding-left:  50px;
+  padding-right: 50px;
+  margin-left:   10px;
+  margin-right:  10px;
+  border: 10px solid black;
+  margin-bottom:10px;
+  background-color:yellow;
+}
+
+#caja1 span {
+	  border: 3px solid black;
+}
+
+#caja3 {
+  position:static;
+  top:210px;
+  left:100px;
+  width: 50px;
+  padding-left:  150px;
+  padding-right: 150px;
+  margin-left:   110px;
+  margin-right:  110px;
+  border: 10px solid black;
+  margin-bottom:10px;
+  background-color:yellow;
+}
+
+
+</style>
+</head>
+
+
+
+<body>
+
+<div id="caja1"><span>span left</span> <span>span right</span></div>
+<div id="caja2"><h1>right top</h1></div>
+<div id="caja3"><h1>50% 50%</h1></div>
+
+<h1> En el posicionamiento normal o static, no afectan atributos como top, bottom, left, right. El posicionamiento static es el default</h1>
+</body>
+</html>

@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename resource &apos;aptana_proyect/src/absoluto.html&apos; to &apos;absoluto1.html&apos;" description="Rename resource &apos;absoluto.html&apos;" flags="7" id="org.eclipse.ltk.core.refactoring.rename.resource" input="src/absoluto.html" name="absoluto1.html" stamp="1492970164174" updateReferences="true"/>
+</session>

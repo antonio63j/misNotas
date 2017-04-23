@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+	    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<style>
+
+
+div { 
+  position:relative;	
+  border: 2px solid #CCC;
+  padding: 1em;
+  margin: 1em 0 1em 4em;
+  width: 600px;
+}
+
+div img {
+  position: absolute;
+  top:  50px; 
+  left: 50px;
+}
+
+</style>
+</head>
+
+
+
+<body>
+
+<div>
+  <img src="img/imagen-absoluto3.gif" alt="Imagen genérica" />
+  <p>Esto es con posicionamiento absoluto, la caja div img tiene posicionamiento absoluto </p>
+  <p>Esto es con posicionamiento absoluto, la caja div img tiene posicionamiento absoluto </p>
+  <p>Esto es con posicionamiento absoluto, la caja div img tiene posicionamiento absoluto </p>
+  <p>Esto es con posicionamiento absoluto, la caja div img tiene posicionamiento absoluto </p>
+  <p>Esto es con posicionamiento absoluto, la caja div img tiene posicionamiento absoluto </p>
+  <p>Esto es con posicionamiento absoluto, la caja div img tiene posicionamiento absoluto </p>
+  <p>Esto es con posicionamiento absoluto, la caja div img tiene posicionamiento absoluto </p>
+  <p>Esto es con posicionamiento absoluto, la caja div img tiene posicionamiento absoluto </p>
+  <p>Esto es con posicionamiento absoluto, la caja div img tiene posicionamiento absoluto </p>
+  <p>Esto es con posicionamiento absoluto, la caja div img tiene posicionamiento absoluto </p>
+  <p>Esto es con posicionamiento absoluto, la caja div img tiene posicionamiento absoluto </p>
+  <p>El contenedor relativo de referencia es la ventana del navegador, puesto que el contenedor de div img, que es div es de posicionamiento normal o static</p>
+</div>
+
+
+
+</body>
+
+</html>
