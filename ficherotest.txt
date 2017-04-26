@@ -4,6 +4,8 @@ modificacion 16:41; modificacion 04/04-13:48 ; modificacion 07/04-17:49; modific
 ----- Modifificacion en ficherotest-copia.txt
 modificacion del 13/04 - 22:45
 
+modificacion desde pc-antonio 26/07 22:57
+
 total 17
 drwxr-xr-x 1 aflucena 1049089 0 abr  3 15:56 ./
 drwxr-xr-x 1 aflucena 1049089 0 mar  6 07:47 ../
