@@ -10,8 +10,13 @@ modificacion de antonio63j el día 25/04 19:29
 
 modificacion de antonio63j el día 26/04 9:59
 
+<<<<<<< HEAD
 
 esto es una modificacion despues del git stash, que  salvaba un cambio de este mismo fichero 
+=======
+modificacion desde pc-antonio 26/07 22:57
+
+>>>>>>> 0ecf9b6501c1238719632aaa839106f14b6913b5
 total 17
 drwxr-xr-x 1 aflucena 1049089 0 abr  3 15:56 ./
 drwxr-xr-x 1 aflucena 1049089 0 mar  6 07:47 ../
