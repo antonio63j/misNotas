@@ -1,0 +1,8 @@
+total 18
+drwxr-xr-x 1 aflucena 1049089   0 abr 27 16:31 ./
+drwxr-xr-x 1 aflucena 1049089   0 abr 25 19:13 ../
+drwxr-xr-x 1 aflucena 1049089   0 abr 27 16:14 .git/
+-rw-r--r-- 1 aflucena 1049089   8 abr 25 19:13 .gitignore
+-rw-r--r-- 1 aflucena 1049089 395 abr 26 14:46 f1.txt
+-rw-r--r-- 1 aflucena 1049089   0 abr 27 16:31 f2.txt
+drwxr-xr-x 1 aflucena 1049089   0 abr 27 15:06 software/
