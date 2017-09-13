@@ -16,3 +16,4 @@ en desarrollo, antonio63jun 7/5/2017 18:44
 en desarrollo, antonio63jun 7/5/2017 20:58
 en desarrollo, antonio63jun 16/6/2017 23:08
 en rama desarrollo, antonio63j 13/09/2017 para pruebas con kdiff3
+por antonio63j a 13/09/2017 para prubas merge con kdiff3
