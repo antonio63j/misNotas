@@ -1,4 +1,4 @@
-pc-antonio. 28/04 18:51 modificacion 
+
 
 en rama desarrollo por antonio63jun, para test merge con kdiff3 a 13/09/2017
 
