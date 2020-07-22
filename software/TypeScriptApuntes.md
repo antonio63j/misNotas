@@ -1,5 +1,7 @@
 ## **TYPESCRIPT**
 
+[TOC]
+
 ### **Instalar compilador / transpilador tsc**
 
 Instalación global:
