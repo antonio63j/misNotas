@@ -27,7 +27,9 @@ npm run tsc -- --all o npm run -- tsc -- all
 #### **Creacion fichero configuración de tsconfig.json**
 
 ```
-npm run -- tsc --init
+npm init (crea fichero package.json)
+npm run -- tsc --init (tsc en local, crea tsconfig.json)
+tsc --init (tsc global, crea tsconfig.json)
 ```
 
 
