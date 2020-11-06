@@ -1,8 +1,139 @@
-## **TYPESCRIPT**
+# **TYPESCRIPT**
 
 [TOC]
 
-### **Instalar compilador / transpilador tsc**
+
+
+## **Resumen de teclas**
+
+
+### **Multicursor**
+
+- Seleccionar todas las ocurrencias de la palabra donde se encuentre el cursor, añade cursor en cada una.
+  **Ctrl + Shift + L**  -> Una vez hecha la secuencia podemos cambiar todas la ocurrencias  
+
+ 		Una vez hecha la seleccion podemos borrar las lineas (Ctrl + Shift + k) o editar nuevo contenido
+
+- **Ctrl  + Click izdo + Click izdo**   -> seleccionamos las palabras donde cliqueamos añadiendo un cursor
+
+  de forma que ahora es posible elimiar, copiar y pegar o reemplazar.  Se puede combinar con 
+
+  Ctrl  y desplazamiento con botón izdo del ratón.
+
+  También con **Ctrl  + Click izdo + Click izdo** pordemos seleccionar la primera palabra y con 
+
+  **Ctrl + D**, busca y selecciona y añade cursor en la siguiente palabra coincidente 
+
+- La edición multicursor
+
+  Ctrl + Alt + U  ->   crear cursores hacia arriba
+
+  Alt + Ctrl  + J  -> crear cursores hacia abajo
+
+
+### **Cambio de atajos**
+
+- Acceso a ayuda sobre teclas
+
+  Ctrl + Shift  + P
+
+- Para cambiar los atajos 
+
+   Ctrl + K  Ctrl + S   
+
+   
+
+- |Ctrl  +  P    | Descripción                                             |
+  |------------- | --------------------------------------------------------|
+  |Ctrl  +  P    |mostrar ficheros que han sido abiertos durante la sesión |
+  |Ctrl  +  P  : |ir a una línea determinada                               |
+  |Ctrl  +  P  @ |mostrar atributos, métodos, igual que Ctrl + Shif + O    |
+  |Ctrl  +  P  > |mostrar gestión de shortcup, igual que  Ctrl + Shift +  P   |
+|Ctrl  +  P  > snipper|gestión de snippers|
+
+  
+
+### **Mostrar atributos, métodos, constructor de una clase**
+
+**Ctrl  +  Shif  + O**
+
+
+
+### **Wrap (envolver)**
+
+- wrap with abbrevation (emmet)
+
+  **Ctrl + W  A**
+
+  ### Control de tabs
+
+- Ctrl + W      Cerrar tab
+
+  ​    Ctrl + K Ctrl + W Cerrar todas
+
+  ​    Ctrl + Shift + T  Reabrir anterior
+
+  ​    Ctrl + TAB     Cambiar de tab
+
+### **Reemplazar y búsqueda**
+
+- Buscar los archivos donde se encuentra la palabra seleccionada
+
+  Ctrl  +  Shif  +  F
+
+- Cambiar las referencias a un clase dentro de un archivo
+
+  Click sobre la referencia a la clase y F2
+
+- Cambiar todas las referencias de todos los archivos
+
+  Seleccionamos la definición de la clase y F2
+
+### **Otros**
+
+#### Comentar selección
+
+Ctrl + ç
+
+#### Seleccionar todas la ocurrencias de la palabra donde está el cursor
+
+**Ctrl + Alt + flecha derecha**
+
+#### Seleccionar el siguiente caracter a partir de la posición del cursor
+
+Shit + flecha derecha
+
+#### copy line down y copy line up
+
+Alt c + Alt c
+
+Alt c + Alt x
+
+#### Mayúsculas Minúsculas
+
+Ctrl + T  Ctrl  + U   pasa a mayúsculas la selección
+
+Ctrl + T  Ctrl  + L    pasa a minúsculas la selección
+
+#### Deshacer y rehacer
+
+Ctrl + Z y Ctrl + Shif + Z
+
+#### Ocultar y mostrar sidebar
+
+Ctrl + B
+
+#### Crear terminal/shell externo
+
+Ctrl + Shit + C
+
+#### Ocultar/mostrar terminal
+
+Ctrl + ñ
+
+
+
+## **Instalar compilador / transpilador tsc**
 
 Instalación global:
 
@@ -24,17 +155,15 @@ npm run tsc -- --all o npm run -- tsc -- all
 
 (this will list all the available options for TypeScript).
 
-#### **Creacion fichero configuración de tsconfig.json**
+### **Creacion fichero configuración de tsconfig.json**
 
 ```
-npm init (crea fichero package.json)
-npm run -- tsc --init (tsc en local, crea tsconfig.json)
-tsc --init (tsc global, crea tsconfig.json)
+npm run -- tsc --init
 ```
 
 
 
-### **Variables var, let y const**
+## **Variables var, let y const**
 
 La diferencia está en el ámbito o scope que se estable con cada tipo.
 
@@ -67,7 +196,7 @@ options = { frecuency: 20, all: true } // Error
 
 
 
-### **Operadores**
+## **Operadores**
 
 #### delete
 
@@ -87,7 +216,7 @@ delete x; // false. Las variables no se pueden borrar
 delete obj["x"] // true
 ```
 
-#### Opereador ... (spread)
+#### Operador ... (spread)
 
 Se utiliza para añadir elementos de un objeto o posiciones de un array.
 
@@ -128,11 +257,11 @@ sum(1, ...numbers); // pasamos el array expandido
 también:
 
 ```
-function sum (a: number, \...more: number ){ }
+function sum (a: number, ...more: number ){ }
 
-let numbers = \[4,5,9,10\];
+let numbers = [4,5,9,10];
 
-sum(1,\...numbers,20,300);
+sum(1, ...numbers,20,300);
 ```
 
 false en TS
@@ -154,9 +283,9 @@ sin evaluar el segundo. Si persona no fuera null evaluaría persona.nombre y se 
 #### Operador OR (\|\|)
 
 ```
-let or = false \|\| 4; // 4
+let or = false || 4; // 4
 
-let or = 10; \|\| \"or\"; // 10
+let or = 10 || "or"; // 10
 ```
 
 Si el primer operando se evalúa como true, se asignará a la variable. Si se evalúa como false, se asignará el segundo operando sea cual sea su
@@ -195,17 +324,17 @@ a == b; // true
 Requiere que al menos uno de los operandos sea any o string.
 
 ```
-let cadena1 = \"Hola, \";
+let cadena1 = "Hola, ";
 
-let cadena2 = \"Mundo\";
+let cadena2 = "Mundo";
 
-cadena1 + cadena2; // \"Hola, Mundo\"
+cadena1 + cadena2; // "Hola, Mundo"
 
-let cadena1 = \"Somos\";
+let cadena1 = "Somos";
 
 let numero = 2;
 
-cadena1 + numero; // \"Somos 2\"
+cadena1 + numero; // "Somos 2"
 ```
 
 Podemos convertir un tipo number, any o enum a string concatenándole la
@@ -214,13 +343,13 @@ cadena vacía.
 ```typescript
 let x: any = 10;
 
-x+\"\"; // \"10\"
+x+""; // "10"
 
-let n:string = \"10\";
+let n:string = "10";
 
 console.log(typeof +n); // pinta number
 
-let n2 = 11 +\"\";
+let n2 = 11 +"";
 
 console.log(typeof n2); // pinta string
 ```
@@ -245,7 +374,7 @@ let obj = {animal:\"Perro\"}
 \*/\"animal\" in obj; // True. Animal es un índice
 ```
 
-#### **Control de flujo**
+## **Control de flujo**
 
 ```
 switch
@@ -296,7 +425,7 @@ for-in
 Va volcando el índice de nombres de la variable temporal indice. La ventaja es que no importa de qué tipo sea el índice: numérico, cadena de
 caracteres, etc. Existe un problema al recorrer arrays de esta forma.
 Debido a que recorre todas las propiedades de array, es posible que incluso itere por las intrínsceas (como length) lo que daría lugar a
-comportanmientos inesperados. Para ello debe debe usarte una precondición dentro del bucle que nos asegure de que exista:
+comportamientos inesperados. Para ello debe debe usarte una precondición dentro del bucle que nos asegure de que exista:
 
 ```
 let nombres: Array\<string\> = \[\"Carlos\", \"José\", \"Lama\"\];
@@ -326,7 +455,7 @@ console.log(name);
 
 Si compilamos para ES6, es necesario que la estructura que estemos iterando implemente un método Symbol.iterator
 
-### **Tipos**
+## **Tipos**
 
 ```
 let variable:tipo;
@@ -413,7 +542,7 @@ suma `La suma de a y b es ${a + b} y la multiplicación es ${a * b}
 
 #### Void
 
-Sirve para determiner que una función no devuelve valor.
+Sirve para determinar que una función no devuelve valor.
 
 #### Null
 
@@ -474,12 +603,12 @@ TypeError. El tipo es symbol
 ```typescript
 let aSymbol = Symbol();
 
-let otherSymbol = \*\*new\*\* Symbol(); // Error
+let otherSymbol = new Symbol(); // Error
 
-let aSymbol = Symbol(\"aSymbol\");// El argumento sirve como
+let aSymbol = Symbol("aSymbol");// El argumento sirve como
 identificador
 
-Symbol(\"aSymbol\") === Symbol(\"aSymbol\"); // False
+Symbol("aSymbol") === Symbol("aSymbol"); // False
 ```
 
 Una de las grandes utilidades de los symbol es que pueden ser usados como propiedades de objetos. Además existen los llamados "bien
@@ -492,7 +621,7 @@ Mejor tipo común con Null
 En el siguiente caso, x es un array de strings. Esto es porque string es compatible con Null
 
 ```
-let x = \[\"uno\", null, \"dos\"\];
+let x = ["uno", null, "dos"];
 ```
 
 Pero si está activa la directiva strictNullCheck, entonces x un array de string \| Null (string unión Null).
@@ -510,7 +639,7 @@ Mejor tipo común entre tipos primitivos
 Si introducimos un tipo primitivo y otro objeto relacionados (number/Number) el mejor tipo común será el del objeto.
 
 ```
-let array = \[3, new Number(1)\] // Number\[\]
+let array = [3, new Number(1)] // Number[]
 ```
 
 Mejor tipo común entre tipos referencia
@@ -524,7 +653,7 @@ class A { }
 
 class B { }
 
-let array = \[new A(), new B()\] // A\[\]
+let array = [new A(), new B()] // A[]
 ```
 
 
@@ -534,18 +663,17 @@ class B extends A { }
 
 class C extends A { }
 
-let array = \[new B(), new C()\]; // B\[\]
+let array = [new B(), new C()]; // B[]
 ```
 
 #### typeof
 
-Este operador es muy útil pues nos informa del tipo de dato de una
-variable. El resultado que nos devuelve es del tipo string
+Este operador es muy útil pues nos informa del tipo de dato de una variable. El resultado que nos devuelve es del tipo string
 
 ```
-let str = typeof 22; // \"number\"
+let str = typeof 22; // "number"
 
-let str = typeof new String(\"probando typeof\"); // \"object\"
+let str = typeof new String("probando typeof"); // "object"
 
 let x = 5;
 
@@ -561,11 +689,11 @@ Obtiene las propiedades de cualquier objeto en forma de unión de cadenas litera
 ```
 type obj = { a: 1, b: 2, c: 3 };
 
-let obj2: keyof obj; // obj2 es del tipo \"a\" \| \"b\" \| \"c\"
+let obj2: keyof obj; // obj2 es del tipo "a" | "b" | \c\
 
-obj2 = \"a\" // Correcto
+obj2 = "a" // Correcto
 
-obj2 = \"Other\" // Incorrecto
+obj2 = "Other" // Incorrecto
 ```
 
 Esto se hace relevante en los tipos mapeados Se puede utilizar junto con typeof para obtener las propiedades de del tipo de una variable 
@@ -573,7 +701,7 @@ Esto se hace relevante en los tipos mapeados Se puede utilizar junto con typeof 
 ```
 let obj: {a :number, b:number, c:string};
 
-let obj2 : keyof typeof obj; // \"a\" \| \"b\" \| \"c\"
+let obj2 : keyof typeof obj; // "a" | "b" | "c"
 ```
 
 #### Tipo Alias (Alias type)
@@ -1518,7 +1646,7 @@ func1 = func2; // Correcto
 console.log(\`func1(3, 4) = \${func1(3 , 4)}\`); // pinta func1(3, 4) =
 4
 
-Clases
+## **Clases**
 
 Declaración
 
@@ -1797,7 +1925,7 @@ console.log (\`JSON.stringify(p) = \${JSON.stringify(p)}\`);
 
 JSON.stringify(p) = {\"\_name\":\"Pepe\"}
 
-Herencia mediante expresiones
+## **Herencia mediante expresiones**
 
 La herencia clásica es explícita y estática, es decir, debemos
 especificar claramente de qué clase se hereda. Con la herencia mediante
@@ -1878,7 +2006,7 @@ un constructor que devuelve la interfaz Fuel. La interfaz
 FuelConstructor sí puede ser usada como tipo en la devolución de la
 función fuelSelector().
 
-Polimorfismo
+## **Polimorfismo**
 
 Partimos de la familia:
 
@@ -2213,7 +2341,7 @@ interfaz, es decir, debe implementar sus métodos y atributos.
 Los estáticos y privados no se tienen en cuenta del mismo modo que en
 una interfaz no se pueden declarar.
 
-Interfaces
+## **Interfaces**
 
 Todos los métodos que componen la interfaz deberán ser implementados por
 la clase que la implemente.
@@ -2254,7 +2382,7 @@ desplazar(): void;
 
 }
 
-Herencia entre interfaces
+## **Herencia entre interfaces**
 
 Una interfaz puede extender a otro interfaz.
 
@@ -2395,7 +2523,7 @@ const enum Animales {perro, gato, tortuga};
 
 animal: Animales = Animales\[1\];// Error
 
-Genéricos
+## **Genéricos**
 
 Los genéricos parametrizan las clases y las interfaces.
 
@@ -2519,7 +2647,7 @@ IConcesionario\<T\>{
 
 }
 
-Funciones genéricas
+#### **Funciones genéricas**
 
 Las funciones y métodos pueden ser genéricos:
 
@@ -2590,7 +2718,7 @@ return null;
 
 }
 
-Control de errores
+## **Control de errores**
 
 En TS hablamos de errores y no de excepciones como en otros lenguajes.
 
@@ -2844,7 +2972,7 @@ console.log(\`countLines() = \${countLines()}\`);
 
 console.log(\`countLines(undefined) = \${countLines(undefined)}\`);
 
-DOM
+## **DOM**
 
 El objeto window es el que está posicionado en la parte superior de esta
 jerarquía. Éste contiene al objeto document que el que posee los métodos
@@ -2944,7 +3072,7 @@ let B: M.B; // Correcto.
 
 LAS PRUEBAS CON NAMESPACES NO HAN FUNCIONADO. HAY QUE PROFUNDIZAR ...
 
-Iteradores
+## **Iteradores**
 
 A value is considered iterable if it has a method whose key is the
 symbol \[1\] Symbol.iterator that returns a so-called iterator. The
@@ -3152,7 +3280,7 @@ console.log(n) // 7, 8, 3, 2
 
 Para poder iterar sobre el propio número:
 
-Promise, async -- await
+## **Promise, async -- await**
 
 El objeto promise se introdujo con ES6, async + await en ES2016.
 
