@@ -52,6 +52,14 @@ Con estos certificados, establecer en el registro tipo "TXT" con nombre "_acme-c
 
 ![](C:\Proyectos\AngularSpring\curriculum2\aflcv-back\configuracionDNS.jpg)
 
+## Certificados para emails
+
+Certificados empleados para postfix y dovecot en el dominio fernandezlucena.es hospedado clouding.io
+
+```
+sudo certbot certonly --standalone --rsa-key-size 4096 --agree-tos --preferred-challenges http -d fernandezlucena.es
+```
+
 ## Emails
 
 ### Instalar postfix y dovecot
