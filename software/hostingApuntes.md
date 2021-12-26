@@ -7,7 +7,7 @@
 
 ## Certificados para web
 
-  Instalamos con apt snap certbot, en ubuntu 20.04 ya biene instalado openssl y git
+  Instalamos con apt snap certbot, en ubuntu 20.04 ya viene instalado openssl y git
 
 ```
 `sudo snap install certbot --classic`
