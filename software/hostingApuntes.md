@@ -92,6 +92,8 @@ lwDPVxbhSJPBeDzMD6apDYxosWmBSAEAFPyB6dFDd2M
 
 ## Certificados para emails
 
+Para renovar el certrificado, tenemos que parar el servicio nginx, crear el nuevo certificado y arrancar nginx.
+
 Certificados empleados para postfix y dovecot en el dominio fernandezlucena.es hospedado clouding.io
 
 ```
@@ -251,31 +253,78 @@ Esta app es un spring boot al que se le asigna un keystore.p12, por tanto el fro
 
 ## Deploy en servidor fernandezlucena.es:
 
-1. Abrir puerto 8074 y 8084 para front y back respectivamente
+1. **Abrir puerto 8074 y 8084 para front y back respectivamente**
 
-2. Instalar nvm
+2. **Instalar nvm**
 
-3. Con nvm instalamos node
+3. **Con nvm instalamos node**
 
-4. Instalamos express
+4. **Instalamos express**
 
-5. Instalamos nginx y creamos el fichero /etc/nginx/conf.d/restaurante.fernandezlucena.es.conf con el contenido:
-   
+5. **Instalamos nginx **
+
+   Configuaración reverse proxies de nginx:
+
+   En el directorio /etc/nginx/conf.d, añadimos un fichero para la parte front de cada aplicación web, este es un ejemplo para la aplicación restaurante (restaurante.fernandezlucena.es.conf):
 
    ```
    server {
-           listen 80;
-           server_name restaurante.fernandezlucena.es;
-           location / {
-                   proxy_pass      http://localhost:8074;
-           }
+   listen 80;
+   server_name restaurante.fernandezlucena.es www.restaurante.fernandezlucena.es; # Edit this to your domain name
+   rewrite ^ https://$host$request_uri permanent;
    }
+   
+   server {
+   listen 443 ssl;
+   
+   server_name restaurante.fernandezlucena.es;
+   \# Edit the above _YOUR-DOMAIN_ to your domain name
+   
+   ssl_certificate /etc/letsencrypt/live/fernandezlucena.es-0001/fullchain.pem;
+   \# If you use Lets Encrypt, you should just need to change the domain.
+   \# Otherwise, change this to the path to full path to your domains public certificate file.
+   
+   ssl_certificate_key /etc/letsencrypt/live/fernandezlucena.es-0001/privkey.pem;
+   \# If you use Let's Encrypt, you should just need to change the domain.
+   \# Otherwise, change this to the direct path to your domains private key certificate file.
+   
+   ssl_session_cache builtin:1000 shared:SSL:10m;
+   \# Defining option to share SSL Connection with Passed Proxy
+   
+   ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+   \# Defining used protocol versions.
+   
+   ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
+   \# Defining ciphers to use.
+   
+   ssl_prefer_server_ciphers on;
+   \# Enabling ciphers
+   
+   access_log /var/log/nginx/access.log;
+   \# Log Location. the Nginx User must have R/W permissions. Usually by ownership.
+   
+   location / {
+   proxy_set_header Host $host;
+   proxy_set_header X-Real-IP $remote_addr;
+   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+   proxy_set_header X-Forwarded-Proto $scheme;
+   proxy_pass http://localhost:8074;
+   \#proxy_pass unix:/path/to/php7.3.sock # This is an example of how to define a unix socket.
+   proxy_read_timeout 90;
+   }
+   
+   } \# Don't leave this out! It "closes" the server block we started this ile with.
    ```
 
+   Las peticiones al back emitidas desde angular no se tratan con nginx, puesto que la aplicación back de angular boot, trabaja con un certificado que le permite la gestion TLS.
+
+   podemos ahora comprovar la sintaxis con **sudo nginx -t**
+
+   y para que entre en vigor: **sudo systemctl restart nginx**
    
-
-
-6)	Instalación del back:
+   
+   
+6. **Instalación del back:**
 antonio@fernandezlucena:~/www/restaurante-back$ tree -a
 
 También habría que añadir keystore.p12 (para https)
@@ -379,12 +428,14 @@ También habría que añadir keystore.p12 (para https)
 
 
 
-7)	Instalacion del front:
+7.a. **Instalacion del front (sin universal):**
 
 Creamos dist para producción (**npm run – ng build –prod**)
 En \home\antonio\www\restaurante-front creamos un carpetas con nombre dist, en ella hacemos un npm init, instalamos express: 
 
-**nmp install express –save**
+```
+nmp install express –save
+```
 
 Copiamos la carpeta de desarrallo del pc …..\dist\restaurante from en la carpeta de producción dist que acabamos de crear
 En la carpeta de producción dist creamos index.js que es el que escuchará en el puerto 8084. La carpeta index tendrá:
@@ -474,63 +525,70 @@ antonio@fernandezlucena:~/www/restaurante-front$ **tree -I node_modules**:
 
 
 
-Configuaración reverse proxies de nginx:
+7.b. **Instalacion del front (con universal):**
 
-En el directorio /etc/nginx/conf.d, añadimos un fichero para la parte front y back de cada aplicación web, este es un ejemplo para la aplicación restaurante (restaurante.fernandezlucena.es.conf):
+Al añadir universal al proyecto se creó un fichero server.ts, este fichero hay que retocarlo para poner el puerto de escucha para servir los ficheros al navegador, en este caso el puerto 8074 (restaurante.fernandezlucena.es). Esto se reflejará en el main.js, que finalmente atiendo el puerto 8074. Ver como se utiliza este ejecutable (main.js) cuando se describe el servicio "metarestaurante-front.service".
 
+Ahora podemos generar la carpeta deploy (dist) con npm run -- ng build:ssr.
 
+A continuación se copia la carpeta dist en /home/antonio/www/metarestaurante-front del servidor
+
+Tener en cuenta que cada vez que actualicemos la carpeta dist del servidor, tendremos que incorporar los ficheros sitemap.xml y robots.txt en 
+
+/home/antonio/www/metarestaurante-front/dist/metarestaurante-front/browser
+
+podemos automatizar con angular.json:
 
 ```
-server {
-listen 80;
-server_name restaurante.fernandezlucena.es www.restaurante.fernandezlucena.es; # Edit this to your domain name
-rewrite ^ https://$host$request_uri permanent;
-}
+   "architect": {
 
-server {
-listen 443 ssl;
+​    "build": {
 
-server_name restaurante.fernandezlucena.es;
-\# Edit the above _YOUR-DOMAIN_ to your domain name
+​     "builder": "@angular-devkit/build-angular:browser",
 
-ssl_certificate /etc/letsencrypt/live/fernandezlucena.es-0001/fullchain.pem;
-\# If you use Lets Encrypt, you should just need to change the domain.
-\# Otherwise, change this to the path to full path to your domains public certificate file.
+​     "options": {
 
-ssl_certificate_key /etc/letsencrypt/live/fernandezlucena.es-0001/privkey.pem;
-\# If you use Let's Encrypt, you should just need to change the domain.
-\# Otherwise, change this to the direct path to your domains private key certificate file.
+​      "outputPath": "dist/metarestaurante-front/browser",
 
-ssl_session_cache builtin:1000 shared:SSL:10m;
-\# Defining option to share SSL Connection with Passed Proxy
+​      "index": "src/index.html",
 
-ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-\# Defining used protocol versions.
+​      "main": "src/main.ts",
 
-ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
-\# Defining ciphers to use.
+​      "polyfills": "src/polyfills.ts",
 
-ssl_prefer_server_ciphers on;
-\# Enabling ciphers
+​      "tsConfig": "tsconfig.app.json",
 
-access_log /var/log/nginx/access.log;
-\# Log Location. the Nginx User must have R/W permissions. Usually by ownership.
+​      "inlineStyleLanguage": "scss",
 
-location / {
-proxy_set_header Host $host;
-proxy_set_header X-Real-IP $remote_addr;
-proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-proxy_set_header X-Forwarded-Proto $scheme;
-proxy_pass http://localhost:8074;
-\#proxy_pass unix:/path/to/php7.3.sock # This is an example of how to define a unix socket.
-proxy_read_timeout 90;
-}
+​      "assets": [
 
-} \# Don't leave this out! It "closes" the server block we started this ile with.
+​       "src/favicon.ico",
+
+​       "src/assets",
+
+​       "src/sitemap.xml",
+
+​       "src/robots.txt"
 ```
 
-Las peticiones al back emitidas desde angular no se tratan con nginx, puesto que la aplicación back de angular boot, trabaja con un certificado que le permite la gestion TLS.
 
-podemos ahora comprovar la sintaxis con **sudo nginx -t**
 
-y para que entre en vigor: **sudo systemctl restart nginx**
+El servicio /etc/systemd/system/restaurante-front.service es:
+
+```
+[Unit]
+Description=Angular restaurante-front Service
+
+[Service]
+User=antonio
+#The configuration file application.properties should be here:
+#WorkingDirectory=/home/antonio/www/restaurante-front/dist
+WorkingDirectory=/home/antonio/www/restaurante-front
+#ExecStart= /home/antonio/.nvm/versions/node/v14.17.4/bin/node /home/antonio/www/restaurante-front/dist/index.js
+ExecStart= /home/antonio/.nvm/versions/node/v14.17.4/bin/node /home/antonio/www/restaurante-front/dist/restaurante-front/server/main.js
+
+[Install]
+WantedBy=multi-user.target
+```
+
+**SEO**: debemos ir a google search console, para indicar las paginas a indexar y asigna el sitemap.xml
