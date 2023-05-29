@@ -1,8 +1,0 @@
-total 17
-drwxr-xr-x 1 anton 197609  0 May 29 21:11 ./
-drwxr-xr-x 1 anton 197609  0 May 26 12:12 ../
-drwxr-xr-x 1 anton 197609  0 May 29 21:05 .git/
--rw-r--r-- 1 anton 197609 37 Jul 20  2020 .gitignore
-drwxr-xr-x 1 anton 197609  0 May 26 12:12 configuracion-servidos-ubuntu-20.04/
-drwxr-xr-x 1 anton 197609  0 May 29 21:05 software/
--rw-r--r-- 1 anton 197609  0 May 29 21:11 zz.txt
