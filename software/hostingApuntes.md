@@ -1,4 +1,4 @@
-## Ubuntu 20.04 
+## Ubuntu 20.04
 
 - instalar openjdk8
 - instalar postgresql (version 12)
@@ -11,7 +11,6 @@
 
 ```
 `sudo snap install certbot --classic`
-
 ```
 
 la instalacion de certbot no será visible con 
@@ -26,7 +25,17 @@ para ver lo instaldo con snap, tendremos que hacer
 snap list
 ```
 
-Crear certificado, hay un script para ello en /home/antonio
+a fecha 30/05/2023:
+
+`antonio@fernandezlucena:~$ snap list
+Name     Version   Rev    Tracking       Publisher     Notes
+certbot  2.6.0     3024   latest/stable  certbot-eff✓  classic
+core20   20230503  1891   latest/stable  canonical✓    base
+snapd    2.59.2    19122  latest/stable  canonical✓    snapd`
+
+
+
+Crear certificado, hay un script para ello en /home/antonio: 
 
 ```
 certbot certonly \
@@ -42,30 +51,31 @@ certbot certonly \
 Podemos comprovar que el registro _acme-callenge se ha desplegado con el comando:
 
 ```
-host -t txt _acme-challenge.fernandezlucena.es 	
+host -t txt _acme-challenge.fernandezlucena.es     
 ```
 
 Si ya tenemos generado algún certificado, numera los directorios donde se colocan los certificados. El script de arriba, genera los certificados en  /etc/letsencrypt/live/fernandezlucena.es-0001/.
 
-
-
 Para renobar los certificados sería:
 
 ```
-sudo certbot renew (última renovacion, que ha dejado los certificados en 
+sudo certbot renew (úl
+tima renovacion, que ha dejado los certificados en 
   /etc/letsencrypt/live/fernandezlucena.es-0001/)
 ```
 
 Crear certificado .p12 para la aplicación spring boot. Si 
 
 ```
-openssl pkcs12 -export -in /etc/letsencrypt/live/fernandezlucena.es-0001/fullchain.pem \
+openssl pkcs12 -export -in /etc/letsencrypt/live/fdusoernandezlucena.es-0001/fullchain.pem \
                -inkey /etc/letsencrypt/live/fernandezlucena.es-0001/privkey.pem \
                -out ./www/aflcv-back/keystore.p12 \
                -name tomcat \
                -CAfile /etc/letsencrypt/live/fernandezlucena.es-0001/chain.pem \
                -caname caname
 ```
+
+Una vez 
 
 Para ver el estado de los certificados:
 
@@ -96,52 +106,59 @@ Para renovar el certrificado, tenemos que parar el servicio nginx, crear el nuev
 
 Certificados empleados para postfix y dovecot en el dominio fernandezlucena.es hospedado clouding.io
 
+
+
+Antes de ejecutar este comando habría que parar el servicio nginx
+
+ `sudo systemctl stop nginx`
+
 ```
 sudo certbot certonly --standalone --rsa-key-size 4096 --agree-tos --preferred-challenges http -d fernandezlucena.es
-
 ```
 
-y nos muestra:
+`sudo systemctl start nginx`
 
- - ```
-   antonio@fernandezlucena:~$ sudo certbot certonly --standalone --rsa-key-size 4096 --agree-tos --preferred-challenges http -d fernandezlucena.es
-   Saving debug log to /var/log/letsencrypt/letsencrypt.log
-   Plugins selected: Authenticator standalone, Installer None
-   Cert not yet due for renewal
-   
-   You have an existing certificate that has exactly the same domains or certificate name you requested and isn't close to expiry.
-   (ref: /etc/letsencrypt/renewal/fernandezlucena.es.conf)
-   
-   What would you like to do?
-   
-   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   
-   1: Keep the existing certificate for now
-   2: Renew & replace the certificate (may be subject to CA rate limits)
-   
-   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   
-   Select the appropriate number [1-2] then [enter] (press 'c' to cancel): 2
-   Renewing an existing certificate for fernandezlucena.es
-   
-   IMPORTANT NOTES:
-   
-    - Congratulations! Your certificate and chain have been saved at:
-      /etc/letsencrypt/live/fernandezlucena.es/fullchain.pem
-      Your key file has been saved at:
-      /etc/letsencrypt/live/fernandezlucena.es/privkey.pem
-      Your certificate will expire on 2021-06-22. To obtain a new or
-      tweaked version of this certificate in the future, simply run
-      certbot again. To non-interactively renew *all* of your
-      certificates, run "certbot renew"
-   
-    - If you like Certbot, please consider supporting our work by:
-   
-      Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
-      Donating to EFF:                    https://eff.org/donate-le
-   ```
-   
-   
+certbot nos mostrará:
+
+- ```
+  antonio@fernandezlucena:~$ sudo certbot certonly --standalone --rsa-key-size 4096 --agree-tos --preferred-challenges http -d fernandezlucena.es
+  Saving debug log to /var/log/letsencrypt/letsencrypt.log
+  Plugins selected: Authenticator standalone, Installer None
+  Cert not yet due for renewal
+  
+  You have an existing certificate that has exactly the same domains or certificate name you requested and isn't close to expiry.
+  (ref: /etc/letsencrypt/renewal/fernandezlucena.es.conf)
+  
+  What would you like to do?
+  
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  1: Keep the existing certificate for now
+  2: Renew & replace the certificate (may be subject to CA rate limits)
+  
+  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Select the appropriate number [1-2] then [enter] (press 'c' to cancel): 2
+  Renewing an existing certificate for fernandezlucena.es
+  
+  IMPORTANT NOTES:
+  
+   - Congratulations! Your certificate and chain have been saved at:
+     /etc/letsencrypt/live/fernandezlucena.es/fullchain.pem
+     Your key file has been saved at:
+     /etc/letsencrypt/live/fernandezlucena.es/privkey.pem
+     Your certificate will expire on 2021-06-22. To obtain a new or
+     tweaked version of this certificate in the future, simply run
+     certbot again. To non-interactively renew *all* of your
+     certificates, run "certbot renew"
+  
+   - If you like Certbot, please consider supporting our work by:
+  
+     Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+     Donating to EFF:                    https://eff.org/donate-le
+  
+  
+  ```
 
 ## Emails
 
@@ -151,19 +168,19 @@ Para dovecot, solo se ha instalado imap
 
 ### Adaptar ficheros de configuracion:
 
-​	/etc/postfix/main.cf
-​	/etc/dovecot/conf.d/10-auth.conf
-​	/etc/dovecot/conf.d/10-mail.conf
-​	/etc/dovecot/conf.d/10-ssl.conf
-​	/etc/dovecot/dovecot.conf
+​    /etc/postfix/main.cf
+​    /etc/dovecot/conf.d/10-auth.conf
+​    /etc/dovecot/conf.d/10-mail.conf
+​    /etc/dovecot/conf.d/10-ssl.conf
+​    /etc/dovecot/dovecot.conf
 
 ### Abrir puertos:
 
-​	ports 25 (SMTP) ok, 587 (SMTP over TLS) ok, 465 (SMTPS) ok, 143 (IMAP) ok, 993 (IMAPS) ok, 110 (POP3) ok, 995 (POP3S) ok
+​    ports 25 (SMTP) ok, 587 (SMTP over TLS) ok, 465 (SMTPS) ok, 143 (IMAP) ok, 993 (IMAPS) ok, 110 (POP3) ok, 995 (POP3S) ok
 
 ### ver estado del servicio postfix:
 
-​		ver las instancias creadas por postfix
+​        ver las instancias creadas por postfix
 
 ```
 sudo systemctl -l status postfix@-
@@ -217,8 +234,6 @@ sudo postsuper -d ALL
 sudo postsuper -d ALL deferred
 ```
 
-
-
 ## Creación de servicios systemctl
 
 - generar el servicio systemctl, para ello creamos el archivo etc/systemd/system/aflcv-service.service:
@@ -226,13 +241,13 @@ sudo postsuper -d ALL deferred
 ```
   [Unit]
   Description=Java restaurante Service
-  
+
   [Service]
   User=antonio
-  
+
   WorkingDirectory=/home/antonio/www/restaurante-back
   ExecStart=java -jar /home/antonio/www/restaurante-back/app.jar
-  
+
   [Install]
   WantedBy=multi-user.target
 ```
@@ -249,8 +264,6 @@ Esta app es un spring boot al que se le asigna un keystore.p12, por tanto el fro
   sudo systemctl stop restaurante-back.service
 ```
 
-
-
 ## Deploy en servidor fernandezlucena.es:
 
 1. **Abrir puerto 8074 y 8084 para front y back respectivamente**
@@ -262,11 +275,11 @@ Esta app es un spring boot al que se le asigna un keystore.p12, por tanto el fro
 4. **Instalamos express**
 
 5. **Instalamos nginx **
-
+   
    Configuaración reverse proxies de nginx:
-
+   
    En el directorio /etc/nginx/conf.d, añadimos un fichero para la parte front de cada aplicación web, este es un ejemplo para la aplicación restaurante (restaurante.fernandezlucena.es.conf):
-
+   
    ```
    server {
    listen 80;
@@ -315,118 +328,114 @@ Esta app es un spring boot al que se le asigna un keystore.p12, por tanto el fro
    
    } \# Don't leave this out! It "closes" the server block we started this ile with.
    ```
-
+   
    Las peticiones al back emitidas desde angular no se tratan con nginx, puesto que la aplicación back de angular boot, trabaja con un certificado que le permite la gestion TLS.
-
+   
    podemos ahora comprovar la sintaxis con **sudo nginx -t**
-
+   
    y para que entre en vigor: **sudo systemctl restart nginx**
-   
-   
-   
+
 6. **Instalación del back:**
-antonio@fernandezlucena:~/www/restaurante-back$ tree -a
+   antonio@fernandezlucena:~/www/restaurante-back$ tree -a
 
 También habría que añadir keystore.p12 (para https)
 
 ```
-•	.
-•	├── app.jar
-•	├── downloads
-•	│   ├── Areadme.txt
-•	│   └── cv-AntonioFernandezLucena.pdf
-•	├── logs
-•	│   ├── archived
-•	│   │   ├── spring-boot-logger-2021-08-08.0.log
-•	│   │   └── spring-boot-logger-2021-08-08.1.log
-•	│   └── spring-boot-logger.log
-•	├── src
-•	│   └── main
-•	│       └── resources
-•	│           ├── application.properties
-•	│           ├── import.sql
-•	│           ├── log4j.properties
-•	│           ├── logback-spring.out.xml
-•	│           ├── logback-spring.xml
-•	│           ├── mail
-•	│           │   ├── editablehtml
-•	│           │   │   ├── email-activacion-cuenta.html
-•	│           │   │   ├── email-reset-pwd.html
-•	│           │   │   └── images
-•	│           │   │       ├── background.png
-•	│           │   │       ├── logo-background.png
-•	│           │   │       ├── thymeleaf-banner.png
-•	│           │   │       └── thymeleaf-logo.png
-•	│           │   ├── emailconfig.properties
-•	│           │   ├── html
-•	│           │   │   ├── email-inlineimage.html
-•	│           │   │   ├── email-simple.html
-•	│           │   │   └── email-withattachment.html
-•	│           │   ├── javamail.properties
-•	│           │   ├── MailMessages_en.properties
-•	│           │   ├── MailMessages_es.properties
-•	│           │   ├── MailMessages_fr.properties
-•	│           │   ├── MailMessages_it.properties
-•	│           │   ├── MailMessages.properties
-•	│           │   ├── MailMessages_pt.properties
-•	│           │   ├── MailMessages_zh.properties
-•	│           │   └── text
-•	│           │       └── email-text.txt
-•	│           ├── Messages_es.properties
-•	│           ├── Messages_it.properties
-•	│           ├── Messages.properties
-•	│           ├── Messages_pt.properties
-•	│           ├── static
-•	│           │   └── images
-•	│           │       ├── background.png
-•	│           │       ├── logo-background.png
-•	│           │       ├── mini_no-photo.jpg
-•	│           │       ├── mini_no-photo.png
-•	│           │       ├── no-photo-2.jpg
-•	│           │       ├── no-photo-2.png
-•	│           │       ├── no-photo-3.png
-•	│           │       ├── no-photo-ok.png
-•	│           │       ├── no-photo.png
-•	│           │       ├── np-photo.jpg
-•	│           │       ├── thymeleaf-banner.png
-•	│           │       └── thymeleaf-logo.png
-•	│           └── templates
-•	│               ├── console.html
-•	│               ├── cuentaactivada.html
-•	│               └── images
-•	│                   ├── background.png
-•	│                   ├── logo-background.png
-•	│                   ├── thymeleaf-banner.png
-•	│                   └── thymeleaf-logo.png
-•	└── uploads
-•	    ├── admin
-•	    │   ├── empresa.png
-•	    │   ├── filtro-32.png
-•	    │   ├── help.png
-•	    │   ├── home-old.png
-•	    │   ├── home_peque.png
-•	    │   ├── home.png
-•	    │   ├── menu_peque.png
-•	    │   ├── menu.png
-•	    │   ├── no-filtro.png
-•	    │   ├── no-photo.jpg
-•	    │   ├── no-photo.png
-•	    │   ├── orders.png
-•	    │   ├── sugerencias_peque.png
-•	    │   ├── sugerencias.png
-•	    │   ├── tipos_peque.png
-•	    │   ├── tipos.png
-•	    │   └── upload.png
-•	    ├── menus
-•	    ├── sliders
-•	    ├── sugerencias
-•	    │   └── e25d7c35-d89e-44e2-ad51-438b3f763633_slider22.jpg
-•	    └── tipoplatos
-•	
-•	21 directories, 70 files
+•    .
+•    ├── app.jar
+•    ├── downloads
+•    │   ├── Areadme.txt
+•    │   └── cv-AntonioFernandezLucena.pdf
+•    ├── logs
+•    │   ├── archived
+•    │   │   ├── spring-boot-logger-2021-08-08.0.log
+•    │   │   └── spring-boot-logger-2021-08-08.1.log
+•    │   └── spring-boot-logger.log
+•    ├── src
+•    │   └── main
+•    │       └── resources
+•    │           ├── application.properties
+•    │           ├── import.sql
+•    │           ├── log4j.properties
+•    │           ├── logback-spring.out.xml
+•    │           ├── logback-spring.xml
+•    │           ├── mail
+•    │           │   ├── editablehtml
+•    │           │   │   ├── email-activacion-cuenta.html
+•    │           │   │   ├── email-reset-pwd.html
+•    │           │   │   └── images
+•    │           │   │       ├── background.png
+•    │           │   │       ├── logo-background.png
+•    │           │   │       ├── thymeleaf-banner.png
+•    │           │   │       └── thymeleaf-logo.png
+•    │           │   ├── emailconfig.properties
+•    │           │   ├── html
+•    │           │   │   ├── email-inlineimage.html
+•    │           │   │   ├── email-simple.html
+•    │           │   │   └── email-withattachment.html
+•    │           │   ├── javamail.properties
+•    │           │   ├── MailMessages_en.properties
+•    │           │   ├── MailMessages_es.properties
+•    │           │   ├── MailMessages_fr.properties
+•    │           │   ├── MailMessages_it.properties
+•    │           │   ├── MailMessages.properties
+•    │           │   ├── MailMessages_pt.properties
+•    │           │   ├── MailMessages_zh.properties
+•    │           │   └── text
+•    │           │       └── email-text.txt
+•    │           ├── Messages_es.properties
+•    │           ├── Messages_it.properties
+•    │           ├── Messages.properties
+•    │           ├── Messages_pt.properties
+•    │           ├── static
+•    │           │   └── images
+•    │           │       ├── background.png
+•    │           │       ├── logo-background.png
+•    │           │       ├── mini_no-photo.jpg
+•    │           │       ├── mini_no-photo.png
+•    │           │       ├── no-photo-2.jpg
+•    │           │       ├── no-photo-2.png
+•    │           │       ├── no-photo-3.png
+•    │           │       ├── no-photo-ok.png
+•    │           │       ├── no-photo.png
+•    │           │       ├── np-photo.jpg
+•    │           │       ├── thymeleaf-banner.png
+•    │           │       └── thymeleaf-logo.png
+•    │           └── templates
+•    │               ├── console.html
+•    │               ├── cuentaactivada.html
+•    │               └── images
+•    │                   ├── background.png
+•    │                   ├── logo-background.png
+•    │                   ├── thymeleaf-banner.png
+•    │                   └── thymeleaf-logo.png
+•    └── uploads
+•        ├── admin
+•        │   ├── empresa.png
+•        │   ├── filtro-32.png
+•        │   ├── help.png
+•        │   ├── home-old.png
+•        │   ├── home_peque.png
+•        │   ├── home.png
+•        │   ├── menu_peque.png
+•        │   ├── menu.png
+•        │   ├── no-filtro.png
+•        │   ├── no-photo.jpg
+•        │   ├── no-photo.png
+•        │   ├── orders.png
+•        │   ├── sugerencias_peque.png
+•        │   ├── sugerencias.png
+•        │   ├── tipos_peque.png
+•        │   ├── tipos.png
+•        │   └── upload.png
+•        ├── menus
+•        ├── sliders
+•        ├── sugerencias
+•        │   └── e25d7c35-d89e-44e2-ad51-438b3f763633_slider22.jpg
+•        └── tipoplatos
+•    
+•    21 directories, 70 files
 ```
-
-
 
 7.a. **Instalacion del front (sin universal):**
 
@@ -442,7 +451,7 @@ En la carpeta de producción dist creamos index.js que es el que escuchará en e
 
 antonio@fernandezlucena:~/www/restaurante-front/dist$cat index.js: 
 
-````
+```
 ```
 let express = require('express');
 let path = require('path');
@@ -458,7 +467,7 @@ app.listen(port, () => {
     console.log('\n express escuchando sobre el puerto ' + port)
 
 });
-````
+```
 
 Mostramos la carpeta del front:
 antonio@fernandezlucena:~/www/restaurante-front$ **tree -I node_modules**:
@@ -523,8 +532,6 @@ antonio@fernandezlucena:~/www/restaurante-front$ **tree -I node_modules**:
         └── styles.b4ddf2dbc5795ba15b24.css
 ```
 
-
-
 7.b. **Instalacion del front (con universal):**
 
 Al añadir universal al proyecto se creó un fichero server.ts, este fichero hay que retocarlo para poner el puerto de escucha para servir los ficheros al navegador, en este caso el puerto 8074 (restaurante.fernandezlucena.es). Esto se reflejará en el main.js, que finalmente atiendo el puerto 8074. Ver como se utiliza este ejecutable (main.js) cuando se describe el servicio "metarestaurante-front.service".
@@ -571,8 +578,6 @@ podemos automatizar con angular.json:
 ​       "src/robots.txt"
 ```
 
-
-
 El servicio /etc/systemd/system/restaurante-front.service es:
 
 ```
@@ -591,4 +596,4 @@ ExecStart= /home/antonio/.nvm/versions/node/v14.17.4/bin/node /home/antonio/www/
 WantedBy=multi-user.target
 ```
 
-**SEO**: debemos ir a google search console, para indicar las paginas a indexar y asigna el sitemap.xml
+**SEO**: debemos ir a google search console, para indicar las paginas a indexar y asigna el sitemap.xmlsb
