@@ -4,7 +4,7 @@ Un desarrollo web con angular no es propicio para SEO, puesto que la mayor parte
 
 Para resolver esta situación obligaremos a la renderización en el servidor con angular universal.
 
-### Angular universal 
+### Angular universal
 
 Otras mejoras de la renderización en el servidor son:
 
@@ -26,7 +26,6 @@ UPDATE angular.json (5671 bytes)
 UPDATE src/main.ts (547 bytes)
 UPDATE src/app/app.module.ts (4147 bytes)
 UPDATE package.json (2662 bytes)
-
 ```
 
 Y en package.json vemos que se han incorporado:
@@ -43,8 +42,6 @@ En la parte de script:
   "prerender": "ng run publi-restaurante:prerender"
 ```
 
-
-
 y la parte de paquetes:
 
 ```
@@ -55,9 +52,11 @@ y la parte de paquetes:
 "express": "^4.15.2",
 ```
 
+**Para arrancar en desarrollo**
+
 Ahora para ejecutar la aplicación en localhost, deberemos hacer:
 
-npm run --ng dev:ssr
+<mark>npm run --ng dev:ssr</mark>
 
 Dado que la renderización se hace en el lado del servidor y no en la del navegador, y dado que el servidor no tiene APIs por ejemplo para manejar el DOM (document, window,...), tendremos que de alguna forma, salvar este inconveniente.
 
@@ -65,15 +64,12 @@ Dado que la renderización se hace en el lado del servidor y no en la del navega
 
 En server.js (creado al instalar universal), asignamos el puerto en el que estará escuchando dist/metarestaurante-front/server/main.js
 
-generamos producción con **npm run --ng build:ssr** 
+generamos producción con<mark> npm run --ng build:ssr</mark>
+
+Se generará con este comando la carpeta dist que habrá que copiar en ~/www/restaurante-front
 
 Tendremos en el servidor un proceso a la escucha de peticiones, este es justamente el **main.js**, este es el proceso que deberemos indicar
 
 al crear el servicio:
 
-
-
 Configuar nginx:
-
-
-

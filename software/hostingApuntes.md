@@ -33,8 +33,6 @@ certbot  2.6.0     3024   latest/stable  certbot-eff✓  classic
 core20   20230503  1891   latest/stable  canonical✓    base
 snapd    2.59.2    19122  latest/stable  canonical✓    snapd`
 
-
-
 Crear certificado, hay un script para ello en /home/antonio: 
 
 ```
@@ -106,8 +104,6 @@ Para renovar el certrificado, tenemos que parar el servicio nginx, crear el nuev
 
 Certificados empleados para postfix y dovecot en el dominio fernandezlucena.es hospedado clouding.io
 
-
-
 Antes de ejecutar este comando habría que parar el servicio nginx
 
  `sudo systemctl stop nginx`
@@ -156,17 +152,15 @@ certbot nos mostrará:
   
      Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
      Donating to EFF:                    https://eff.org/donate-le
-  
-  
   ```
 
-## Emails
+**Configuración del correo electrónico**
 
-### Instalar postfix y dovecot
+Instalación de postfix y dovecot
 
 Para dovecot, solo se ha instalado imap
 
-### Adaptar ficheros de configuracion:
+Adaptar ficheros de configuracion:
 
 ​    /etc/postfix/main.cf
 ​    /etc/dovecot/conf.d/10-auth.conf
@@ -174,69 +168,47 @@ Para dovecot, solo se ha instalado imap
 ​    /etc/dovecot/conf.d/10-ssl.conf
 ​    /etc/dovecot/dovecot.conf
 
-### Abrir puertos:
+Abrir puertos:
 
 ​    ports 25 (SMTP) ok, 587 (SMTP over TLS) ok, 465 (SMTPS) ok, 143 (IMAP) ok, 993 (IMAPS) ok, 110 (POP3) ok, 995 (POP3S) ok
 
-### ver estado del servicio postfix:
+Ver estado del servicio postfix:
 
-​        ver las instancias creadas por postfix
+​ ver las instancias creadas por postfix
 
-```
-sudo systemctl -l status postfix@-
-```
+<mark>sudo systemctl -l status postfix@-</mark>
 
-​          ver la configuarción de postfix
+Ver la configuarción de postfix
 
-```
-sudo postconf
-```
+<mark>sudo postconf</mark>
 
-### enviar correo de prueba
+enviar correo de prueba
 
-```
-echo "Subject:Correo Maildir 1" | sendmail info@fernandezlucena.es
-```
+<mark>echo "Subject:Correo Maildir 1" | sendmail info@fernandezlucena.es</mark>
 
-### ver log:
+Ver log:
 
-```
-sudo tail -f /var/log/mail.log
-```
+<mark>sudo tail -f /var/log/mail.log</mark>
 
-### ver los correos del usurario info:
+Ver los correos del usurario info:
+<mark>mail -f /home/info/Maildir</mark>
 
-```
-mail -f /home/info/Maildir
-```
+Ver protocolos instalados por dovecot:
+<mark>sudo cat /usr/share/dovecot/protocols.d/*.protocol</mark>
 
-### ver protocolos instalados por dovecot:
+Ver cola de correos de un usuario
+<mark>mailq</mark>
 
-```
-sudo cat /usr/share/dovecot/protocols.d/*.protocol
-```
+Eliminar cola de correos
+<mark>sudo postsuper -d ALL</mark>
 
-### ver cola de correos de un usuario
+Eliminar cola de correos diferidos
+<mark>sudo postsuper -d ALL deferred</mark>
 
-```
-mailq
-```
+**Creación de servicios systemctl**
 
-### eliminar cola de correos
-
-```
-sudo postsuper -d ALL
-```
-
-### eliminar cola de correos diferidos
-
-```
-sudo postsuper -d ALL deferred
-```
-
-## Creación de servicios systemctl
-
-- generar el servicio systemctl, para ello creamos el archivo etc/systemd/system/aflcv-service.service:
+- generar el servicio systemctl, para ello creamos el archivo 
+  etc/systemd/system/aflcv-service.service:
 
 ```
   [Unit]
@@ -252,70 +224,69 @@ sudo postsuper -d ALL deferred
   WantedBy=multi-user.target
 ```
 
-Esta app es un spring boot al que se le asigna un keystore.p12, por tanto el front de angular puede solicitar los servicios con GET "https://restaurante-back.fernandezlucena.es:8084/api/pedido/1" (SSL). Los mensajes https (TLS) desde el front no necesinta de ningún reverse proxi de nginx.
+Esta app es un spring boot al que se le asigna un keystore.p12, por tanto  el front de angular puede solicitar los servicios con:
+GET "https://restaurante-back.fernandezlucena.es:8084/api/pedido/1" (SSL). Los mensajes https (TLS) desde el front no necesinta de ningún reverse proxi de nginx.
 
-  gestión sobre los servicios:
+  **Parada y arranque de servicios**
 
-```
   sudo systemctl daemon-reload
   sudo systemctl enable restaurante-back.service
   sudo systemctl start restaurante-back.service
   sudo systemctl restart restaurante-back.service
   sudo systemctl stop restaurante-back.service
-```
 
-## Deploy en servidor fernandezlucena.es:
+**Deploy en servidor fernandezlucena.es:**
 
-1. **Abrir puerto 8074 y 8084 para front y back respectivamente**
+1. Abrir puerto 8074 y 8084 para front y back respectivamente
 
-2. **Instalar nvm**
+2. Instalar nvm
 
-3. **Con nvm instalamos node**
+3. Con nvm instalamos node
 
-4. **Instalamos express**
+4. Instalamos express
 
-5. **Instalamos nginx **
-   
-   Configuaración reverse proxies de nginx:
-   
+5. Instalamos nginx
+
+**Configuaración reverse proxies de nginx:**
+
    En el directorio /etc/nginx/conf.d, añadimos un fichero para la parte front de cada aplicación web, este es un ejemplo para la aplicación restaurante (restaurante.fernandezlucena.es.conf):
-   
-   ```
+
+```
    server {
    listen 80;
    server_name restaurante.fernandezlucena.es www.restaurante.fernandezlucena.es; # Edit this to your domain name
    rewrite ^ https://$host$request_uri permanent;
    }
-   
+
    server {
    listen 443 ssl;
-   
+
    server_name restaurante.fernandezlucena.es;
    \# Edit the above _YOUR-DOMAIN_ to your domain name
-   
+
    ssl_certificate /etc/letsencrypt/live/fernandezlucena.es-0001/fullchain.pem;
    \# If you use Lets Encrypt, you should just need to change the domain.
    \# Otherwise, change this to the path to full path to your domains public certificate file.
-   
+
    ssl_certificate_key /etc/letsencrypt/live/fernandezlucena.es-0001/privkey.pem;
    \# If you use Let's Encrypt, you should just need to change the domain.
    \# Otherwise, change this to the direct path to your domains private key certificate file.
-   
+
    ssl_session_cache builtin:1000 shared:SSL:10m;
    \# Defining option to share SSL Connection with Passed Proxy
-   
+
    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
    \# Defining used protocol versions.
-   
+
    ssl_ciphers HIGH:!aNULL:!eNULL:!EXPORT:!CAMELLIA:!DES:!MD5:!PSK:!RC4;
    \# Defining ciphers to use.
-   
+
    ssl_prefer_server_ciphers on;
    \# Enabling ciphers
-   
+
    access_log /var/log/nginx/access.log;
    \# Log Location. the Nginx User must have R/W permissions. Usually by ownership.
-   
+
    location / {
    proxy_set_header Host $host;
    proxy_set_header X-Real-IP $remote_addr;
@@ -325,18 +296,18 @@ Esta app es un spring boot al que se le asigna un keystore.p12, por tanto el fro
    \#proxy_pass unix:/path/to/php7.3.sock # This is an example of how to define a unix socket.
    proxy_read_timeout 90;
    }
-   
-   } \# Don't leave this out! It "closes" the server block we started this ile with.
-   ```
-   
-   Las peticiones al back emitidas desde angular no se tratan con nginx, puesto que la aplicación back de angular boot, trabaja con un certificado que le permite la gestion TLS.
-   
-   podemos ahora comprovar la sintaxis con **sudo nginx -t**
-   
-   y para que entre en vigor: **sudo systemctl restart nginx**
 
-6. **Instalación del back:**
-   antonio@fernandezlucena:~/www/restaurante-back$ tree -a
+   } \# Don't leave this out! It "closes" the server block we started this ile with.
+```
+
+Las peticiones al back emitidas desde angular no se tratan con nginx, puesto que la aplicación back de angular boot, trabaja con un certificado que le permite la gestion TLS.
+
+podemos ahora comprovar la sintaxis con **sudo nginx -t**
+
+y para que entre en vigor: **sudo systemctl restart nginx**
+
+**Ejemplo de estructura de ficheros de una aplicación back:**
+antonio@fernandezlucena:~/www/restaurante-back$ tree -a
 
 También habría que añadir keystore.p12 (para https)
 
@@ -437,27 +408,27 @@ También habría que añadir keystore.p12 (para https)
 •    21 directories, 70 files
 ```
 
-7.a. **Instalacion del front (sin universal):**
+**Instalacion del front (sin universal):**
 
 Creamos dist para producción (**npm run – ng build –prod**)
-En \home\antonio\www\restaurante-front creamos un carpetas con nombre dist, en ella hacemos un npm init, instalamos express: 
+En \home\antonio\www\restaurante-front creamos un carpetas con nombre 
+dist, en ella hacemos un npm init, instalamos express: 
 
 ```
 nmp install express –save
 ```
 
-Copiamos la carpeta de desarrallo del pc …..\dist\restaurante from en la carpeta de producción dist que acabamos de crear
+Copiamos la carpeta de desarrallo del pc …..\dist\restaurante from en la carpeta de producción dist que acabamos de crear.
 En la carpeta de producción dist creamos index.js que es el que escuchará en el puerto 8084. La carpeta index tendrá:
 
-antonio@fernandezlucena:~/www/restaurante-front/dist$cat index.js: 
+antonio@fernandezlucena:~/www/restaurante-front/dist $cat index.js: 
 
-```
 ```
 let express = require('express');
 let path = require('path');
 let app = express();
 let port = 8074;
-```
+
 
 app.use(express.static('restaurante-front'));
 app.get('*', (req, res, next)  => {
@@ -532,7 +503,7 @@ antonio@fernandezlucena:~/www/restaurante-front$ **tree -I node_modules**:
         └── styles.b4ddf2dbc5795ba15b24.css
 ```
 
-7.b. **Instalacion del front (con universal):**
+**Instalacion del front (con universal):**
 
 Al añadir universal al proyecto se creó un fichero server.ts, este fichero hay que retocarlo para poner el puerto de escucha para servir los ficheros al navegador, en este caso el puerto 8074 (restaurante.fernandezlucena.es). Esto se reflejará en el main.js, que finalmente atiendo el puerto 8074. Ver como se utiliza este ejecutable (main.js) cuando se describe el servicio "metarestaurante-front.service".
 
