@@ -19,3 +19,5 @@ https://youtu.be/jQ3I2rtASto?si=eE7adKZZYtJFPoEt
 - proot-distro login --user antonio debian 
   - Para entrar como antonio en debían
   
+  Permisos de termux sobre la memoria de Android 
+  https://wiki.termux.com/wiki/Internal_and_external_storage
