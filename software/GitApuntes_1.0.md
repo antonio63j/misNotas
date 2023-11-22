@@ -1,3 +1,4 @@
+
 [TOC]
 
 # Apuntes Git
@@ -54,6 +55,10 @@ As for the location of the Linux Git configuration files, here is where you’ll
 | Local                                      | <git-repo>/.git/config                          | config            |
 | Worktree                                   | <git-repo>/.git/config.worktree                 | config.worktree   |
 | <p>Autentica</p><p>cion</p>                | ~etc/gitconfig                                  | gitconfig         |
+
+Podemos utilizar 
+`git --global credencial.helper store`
+Y cuando pongamos el PAT en algún comando git, este se guardará en /home/username.git-credencials
 
 El fichero de configuración -- global de Git es c:\Usuarios\usuario\.gitconfig
 
