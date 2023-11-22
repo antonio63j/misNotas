@@ -1,4 +1,4 @@
-## Ubuntu 20.04
+Lo## Ubuntu 20.04
 
 - instalar openjdk8
 - instalar postgresql (version 12)
@@ -96,7 +96,12 @@ Con estos certificados, establecer en el registro tipo "TXT" con nombre "_acme-c
 
 lwDPVxbhSJPBeDzMD6apDYxosWmBSAEAFPyB6dFDd2M
 
-![](DNS-Configuracion.jpg)
+![](/software/adjuntos/DNS-Configuracion.jpg)
+
+Así ha quedado la configuración tras los cambios en la migración de hostinet.
+
+![](/software/adjuntos/nueva-cfg-resgistros-dns-hostinet.png)
+
 
 ## Certificados para emails
 

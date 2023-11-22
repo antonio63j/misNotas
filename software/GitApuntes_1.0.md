@@ -1,19 +1,22 @@
-## ﻿Conceptos básicos
 
-***Estados de los archivos gestionados con Git:***
+[TOC]
 
+# Apuntes Git
+
+
+## Estados de los archivos gestionados con Git:
 
 \- Confirmado (commited):
 
-`  `Los datos están almacenados de manera segura en la DB local.
+Los datos están almacenados de manera segura en la DB local.⅝
 
 \- Modificado (modified):
 
-`  `El fichero se ha modificado pero no se ha confirmado (commit) a la DB local.
+El fichero se ha modificado pero no se ha confirmado (commit) a la DB local.
 
 \- Preparado (staged):
 
-`  `El fichero modificado ha sido marcado para el siguiente commit.
+El fichero modificado ha sido marcado para el siguiente commit.
 
 A un nivel superior existe otra división de los ficheros gestionados por git, tracked o untracked, que quiere decir que son seguidos o no por git.
 
@@ -25,7 +28,7 @@ El directorio de trabajo es una copia de una versión del proyecto. Estos archiv
 
 El área de preparación es un sencillo archivo, generalmente contenido en tu directorio de Git, que almacena información acerca de lo que va a ir en tu próxima confirmación. A veces se le denomina índice, pero se está convirtiendo en estándar el referirse a ella como el área de preparación.
 
-***Configuración git***
+## Ficheros de configuracion
 
 Here is where you will find Git configuration files on Windows:
 
@@ -76,7 +79,7 @@ Para mostrar los ficheros de configuración del proyecto:
 
 git config --list –show-origin
 
-***Configuración diff y merge.***
+## Configuración diff y merge.
 
 Para beyond compare:
 
@@ -100,39 +103,39 @@ Configuración sobre el fichero de configuración global (c:\Usuarios\usr\.gitco
 
 [merge]
 
-`  `tool = meld
+tool = meld
 
 [mergetool "meld"]
 
-`  `cmd = \"C:\\Archivos de programa\\Meld\\meld\\meld.exe\" "$LOCAL" "$BASE" "$REMOTE" "--output=$MERGED"  
+cmd = \"C:\\Archivos de programa\\Meld\\meld\\meld.exe\" "$LOCAL" "$BASE" "$REMOTE" "--output=$MERGED"  
 
-`  `path = C:/Archivos de programa/Meld/meld/meld.exe
+path = C:/Archivos de programa/Meld/meld/meld.exe
 
-`  `trustExitCode = false  
+trustExitCode = false  
 
-`  `keepBackup = false
+keepBackup = false
 
 [diff]
 
-`  `tool = meld
+tool = meld
 
 [difftool "meld"]
 
-`  `cmd = \"C:\\Archivos de programa\\Meld\\meld\\meld.exe\" "$LOCAL" "$REMOTE"
+cmd = \"C:\\Archivos de programa\\Meld\\meld\\meld.exe\" "$LOCAL" "$REMOTE"
 
-`  `path = C:/Archivos de programa/Meld/meld/Meld.exe
+path = C:/Archivos de programa/Meld/meld/Meld.exe
 
 
 
 [mergetool]
 
-`  `keepBackup = false
+keepBackup = false
 
 To launch a diff using Beyond Compare, use the command "git difftool foofile.txt".
 
 At a Windows command prompt, enter the commands:
-` `git config --global merge.tool bc3
-` `git config --global mergetool.bc3.path "c:/Program Files (x86)/Beyond Compare 3/bcomp.exe"
+git config --global merge.tool bc3
+git config --global mergetool.bc3.path "c:/Program Files (x86)/Beyond Compare 3/bcomp.exe"
 
 To launch a 3-way merge using Beyond Compare, use the command "git mergetool foofile.txt".
 
@@ -143,17 +146,17 @@ To launch a 3-way merge using Beyond Compare, use the command "git mergetool foo
 - Creamos el repositorio en github, por ejemplo el repositorio con nombre proyecto 
 - Dentro de la carpeta que incluye el proyecto, podemos hacer:
 
-`	`git init
+git init
 
-`          `git init --initial-branch=main (solo a partir de git 2.30, indicamos la rama ‘main’ como default, que también es el repositorio dafault de github.com) 
+git init --initial-branch=main (solo a partir de git 2.30, indicamos la rama ‘main’ como default, que también es el repositorio dafault de github.com) 
 
-`	`git add .
+git add .
 
-`	`git commit –m”Primer commit”
+git commit –m”Primer commit”
 
-`	`git remote add origin <https://github.com/antonio63j/Proyecto1>
+git remote add origin <https://github.com/antonio63j/Proyecto1>
 
-`	`git push origin master
+git push origin master
 
 Nota:
 
@@ -177,11 +180,11 @@ $ git branch -a
 
 \* master
 
-`  `remotes/origin/HEAD -> origin/master
+remotes/origin/HEAD -> origin/master
 
-`  `remotes/origin/desarrollo
+remotes/origin/desarrollo
 
-`  `remotes/origin/master
+remotes/origin/master
 
 Si queremos echar un vistazo a la rama de desarrollo del repositorio base:
 
@@ -203,7 +206,7 @@ If you want to create a new branch to retain commits you create, you may
 
 do so (now or later) by using -b with the checkout command again. Example:
 
-`  `git checkout -b <new-branch-name>
+git checkout -b <new-branch-name>
 
 HEAD is now at c539c85... se añade la version GitApuntes\_1.0
 
@@ -225,13 +228,13 @@ $ git branch -a
 
 \* desarrollo
 
-`  `master
+master
 
-`  `remotes/origin/HEAD -> origin/master
+remotes/origin/HEAD -> origin/master
 
-`  `remotes/origin/desarrollo
+remotes/origin/desarrollo
 
-`  `remotes/origin/master
+remotes/origin/master
 
 aflucena@AFLUCENAPW7 MINGW32 /d/temp/pruebasclone/misNotas/software (desarrollo)
 
@@ -270,9 +273,9 @@ git branch –a, lista branchs incluso los ocultos.
 
 git branch –d <local-branch>, elimina la rama local <local-branch>, con –D para forzar el borrado sin chequear el estado del merge.
 
-`	`Para eliminar una rama remota: 
+Para eliminar una rama remota: 
 
-`	`git push origin –-delete <remote-branch>, 
+git push origin –-delete <remote-branch>, 
 
 git checkout branch1, para cambiar a la rama branch1
 
@@ -284,13 +287,13 @@ git checkout branch1
 
 git checkout -b desarrollo origin/desarrollo, la idea es crear la rama desarrollo a partir de la rama local oculta origin/desarrollo. Previamente para tener una versión actualizada, tendremos que hacer:
 
-`    `git fetch origin o git fetch origin desarrollo (solo rama desarrollo)
+git fetch origin o git fetch origin desarrollo (solo rama desarrollo)
 
-`    `git checkout -b desarrollo origin/desarrollo.
+git checkout -b desarrollo origin/desarrollo.
 
-`    `Podremos tener también una rama desarrollo en local desde el repositorio github con:
+Podremos tener también una rama desarrollo en local desde el repositorio github con:
 
-`    `git clone -b desarrollo <https://github.com/antonio63j/proyecto.git> 
+git clone -b desarrollo <https://github.com/antonio63j/proyecto.git> 
 
 CORREGIR, DESHACER
 
@@ -300,7 +303,7 @@ CORREGIR, DESHACER
 
 git commit –-amend, sustituye o corrige el último commit. Por ejemplo, si olvidamos incluir en el commit los cambios sobre un fichero, podemos:
 
-`	`git commit –m “commit incompleto”
+git commit –m “commit incompleto”
 
 git add ficheroquefaltaba y que no estaba en estaged (add) cuando se hizo el commit.
 
@@ -435,7 +438,7 @@ git ls-tree --name-only -r <id-commit>, muestra todos los ficheros implicados en
 
 también:
 
-`	`git show [--stat] --oneline HEAD
+git show [--stat] --oneline HEAD
 
 git show [--stat] --oneline <id-commit>
 
@@ -646,7 +649,7 @@ A continuación:
 
 *From https://github.com/antonio63j/SpringRestOneToManyManyToMany*
 
-` `*\* branch            master     -> FETCH\_HEAD*
+*\* branch            master     -> FETCH\_HEAD*
 
 *Current branch master is up to date.*
 
@@ -662,23 +665,22 @@ git commit  -a –m “para issue3”
 
 En T309, antonio63junio hace fork, crea la issue 4, clona el proyecto  y:
 
-`  `334  git add .    
+334  git add .    
 
-`  `335  git config user.name "antonio63junio"
+335  git config user.name "antonio63junio"
 
-`  `336  git config user.email "antonio63junio@gmail.com"
+336  git config user.email "antonio63junio@gmail.com"
 
-`  `339  git remote add upstream      https://github.com/antonio63j/SpringRestOneToManyManyToMany.git
+339  git remote add upstream      https://github.com/antonio63j/SpringRestOneToManyManyToMany.git
 
-`  `342  git pull -r upstream master
+342  git pull -r upstream master
 
-`  `345  git checkout -b rama-para-issue4
+345  git checkout -b rama-para-issue4
 
 
+se modifica README 
 
-`   `se modifica README 
-
-`    `git commit -a -m "modifica AREADME cambiando la fecha de comienzo"
+git commit -a -m "modifica AREADME cambiando la fecha de comienzo"
 
 En T400, antonio63jun actualiza el proyecto base:
 
@@ -690,16 +692,15 @@ En T500, antonio63j hace el merge sobre sobre la rama base.
 
 En T00, antonio63junio hace:
 
-`   `git fetch upstream
+git fetch upstream
 
-`   `git merge upstream/master
+git merge upstream/master
 
-`   `git config --system --unset credential.helper
+git config --system --unset credential.helper
 
-`   `git push origin rama-master-issue4
+git push origin rama-master-issue4
 
-`   `En bithub.com, realizamos el pull request
-
+En github.com, realizamos el pull request
 
 
 En definitiva, seguimos los mismos pasos descritos anteriormente (antonio63jun) para actualizar el repositorio base (el de antonio63j en github).
@@ -781,25 +782,25 @@ Antonio63j, modifica f2, y al hacer git status vemos:
 
 *and have 1 and 2 different commits each, respectively.*
 
-`  `*(use "git pull" to merge the remote branch into yours)*
+*(use "git pull" to merge the remote branch into yours)*
 
 *All conflicts fixed but you are still merging.*
 
-`  `*(use "git commit" to conclude merge)*
+*(use "git commit" to conclude merge)*
 
 *Changes to be committed:*
 
-`        `*modified:   f1.txt*
+*modified:   f1.txt*
 
-`        `*modified:   f2.txt*
+*modified:   f2.txt*
 
 *Changes not staged for commit:*
 
-`  `*(use "git add <file>..." to update what will be committed)*
+*(use "git add <file>..." to update what will be committed)*
 
-`  `*(use "git checkout -- <file>..." to discard changes in working directory)*
+*(use "git checkout -- <file>..." to discard changes in working directory)*
 
-`        `*modified:   f2.txt*
+*modified:   f2.txt*
 
 Curiosamente, f2 queda en dos estados, al hacer commit f2 queda en estado modificado. Por tanto se hace git add + commit antes de push. 
 
@@ -827,23 +828,23 @@ Modifica f1, hace add + commit y con el pull avisa:
 
 *and have 1 and 2 different commits each, respectively.*
 
-`  `*(use "git pull" to merge the remote branch into yours)*
+*(use "git pull" to merge the remote branch into yours)*
 
 *You have unmerged paths.*
 
-`  `*(fix conflicts and run "git commit")*
+*(fix conflicts and run "git commit")*
 
-`  `*(use "git merge --abort" to abort the merge)*
+*(use "git merge --abort" to abort the merge)*
 
 *Changes to be committed:*
 
-`        `*modified:   f2.txt*
+*modified:   f2.txt*
 
 *Unmerged paths:*
 
-`  `*(use "git add <file>..." to mark resolution)*
+*(use "git add <file>..." to mark resolution)*
 
-`        `*both modified:   f1.txt*
+*both modified:   f1.txt*
 
 con el pull se han incluido las líneas orientativas en f1.txt y se ha actualizado f2.
 
@@ -876,19 +877,19 @@ Modifica f1, y a continuación hace pull mostrando:
 
 *From https://github.com/antonio63j/misNotas*
 
-`   `*1bf0449..14c399e  desarrollo -> origin/desarrollo*
+*1bf0449..14c399e  desarrollo -> origin/desarrollo*
 
 *Updating 1bf0449..14c399e*
 
 *error: Your local changes to the following files would be overwritten by merge:*
 
-`        `*f1.txt*
+*f1.txt*
 
 *Please commit your changes or stash them before you merge.*
 
 *Aborting*
 
-`	`f2, no se ha actualizado.
+f2, no se ha actualizado.
 
 Luego add f1, y a continuación hace pull mostrando:
 
@@ -898,7 +899,7 @@ Luego add f1, y a continuación hace pull mostrando:
 
 *error: Your local changes to the following files would be overwritten by merge:*
 
-`        `*f1.txt*
+*f1.txt*
 
 *Please commit your changes or stash them before you merge.*
 
@@ -922,7 +923,7 @@ Luego se hace commit y a continuación se hace pull mostrando:
 
 f2, se ha actualizado y f1 ha quedado con la marcas de ayuda para el commit.
 
-`    `Luego se hace poolmerge + commit + push
+Luego se hace poolmerge + commit + push
 
 **prueba 5: Comprobar si estamos actualizados con repositorio base:**
 
@@ -956,7 +957,7 @@ Dos usuarios trabajando sobre el proyecto misNotas en la rama desarrollo y con r
 
 $ **git push**
 
-`  `Nos informa de se han subido 2 objetos.
+Nos informa de se han subido 2 objetos.
 
 - Antonio63jun:
 
@@ -968,7 +969,7 @@ Username for 'https://github.com': antonio63jun
 
 To https://github.com/antonio63j/misNotas.git
 
-` `! [rejected]        desarrollo -> desarrollo (non-fast-forward)
+! [rejected]        desarrollo -> desarrollo (non-fast-forward)
 
 error: failed to push some refs to 'https://github.com/antonio63j/misNotas.git'
 
@@ -988,11 +989,11 @@ Auto-merging f1.txt
 
 Merge made by the 'recursive' strategy.
 
-` `f1.txt | 3 +++
+f1.txt | 3 +++
 
-` `f2.txt | 2 ++
+f2.txt | 2 ++
 
-` `2 files changed, 5 insertions(+)
+2 files changed, 5 insertions(+)
 
 Si hacemos git status, nos muestra que no hay nada que añadir ni que commitear.
 
@@ -1030,17 +1031,17 @@ Your branch and 'origin/desarrollo' have diverged,
 
 and have 1 and 2 different commits each, respectively.
 
-`  `(use "git pull" to merge the remote branch into yours)
+(use "git pull" to merge the remote branch into yours)
 
 All conflicts fixed but you are still merging.
 
-`  `(use "git commit" to conclude merge)
+(use "git commit" to conclude merge)
 
 Changes to be committed:
 
-`        `modified:   f1.txt
+modified:   f1.txt
 
-`        `modified:   f2.txt
+modified:   f2.txt
 
 se modifica GitApuntes, ahora:
 
@@ -1052,25 +1053,25 @@ Your branch and 'origin/desarrollo' have diverged,
 
 and have 1 and 2 different commits each, respectively.
 
-`  `(use "git pull" to merge the remote branch into yours)
+(use "git pull" to merge the remote branch into yours)
 
 All conflicts fixed but you are still merging.
 
-`  `(use "git commit" to conclude merge)
+(use "git commit" to conclude merge)
 
 Changes to be committed:
 
-`        `modified:   f1.txt
+modified:   f1.txt
 
-`        `modified:   f2.txt
+modified:   f2.txt
 
 Changes not staged for commit:
 
-`  `(use "git add <file>..." to update what will be committed)
+(use "git add <file>..." to update what will be committed)
 
-`  `(use "git checkout -- <file>..." to discard changes in working directory)
+(use "git checkout -- <file>..." to discard changes in working directory)
 
-`        `modified:   software/GitApuntes.docx
+modified:   software/GitApuntes.docx
 
 **$ git commit -m"hacemos commit de con dos ficheros confirmados que pendiente de add GitApuntes"**
 
@@ -1122,7 +1123,7 @@ Aborting
 
 **To https://github.com/antonio63j/misNotas.git**
 
-` `**! [rejected]        desarrollo -> desarrollo (non-fast-forward)**
+**! [rejected]        desarrollo -> desarrollo (non-fast-forward)**
 
 **error: failed to push some refs to 'https://github.com/antonio63j/misNotas.git'**
 
@@ -1136,7 +1137,7 @@ Aborting
 
 **La intención es subir los cambios que hemos hecho en f2. Para ello tenemos que hacer pull,tal y como nos dice en el intento de push.**
 
-`	`**$ git pull**
+**$ git pull**
 
 Auto-merging f2
 
@@ -1146,15 +1147,15 @@ Automatic merge failed; fix conflicts and then commit the result.
 
 aflucena@AFLUCENAPW7 MINGW32 /d/TestGit/antonio63jun/misNotas (desarrollo|MERGING)
 
-`	`**En esta situación f1 y f3 han sido actualizados y f2 ha quedado con marcas de git:**
+**En esta situación f1 y f3 han sido actualizados y f2 ha quedado con marcas de git:**
 **
-` 	`<<<<<<< HEAD
+<<<<<<< HEAD
 
 antonio63jun, en 2017/10/10 8:16
 
 \=======
 
-`      `**con esto de arriba indica que lo que está entre las marcas <<< y === es lo que debe incorporarse debido al propi f2 local y:**
+**con esto de arriba indica que lo que está entre las marcas <<< y === es lo que debe incorporarse debido al propi f2 local y:**
 
 \=======
 
@@ -1176,25 +1177,25 @@ Your branch and 'origin/desarrollo' have diverged,
 
 and have 1 and 1 different commits each, respectively.
 
-`  `(use "git pull" to merge the remote branch into yours)
+(use "git pull" to merge the remote branch into yours)
 
 You have unmerged paths.
 
-`  `(fix conflicts and run "git commit")
+(fix conflicts and run "git commit")
 
-`  `(use "git merge --abort" to abort the merge)
+(use "git merge --abort" to abort the merge)
 
 Changes to be committed:
 
-`        `modified:   f1
+modified:   f1
 
-`        `modified:   f3
+modified:   f3
 
 Unmerged paths:
 
-`  `(use "git add <file>..." to mark resolution)
+(use "git add <file>..." to mark resolution)
 
-`        `both modified:   f2
+both modified:   f2
 **
 
 
@@ -1210,21 +1211,21 @@ Your branch and 'origin/desarrollo' have diverged,
 
 and have 1 and 1 different commits each, respectively.
 
-`  `(use "git pull" to merge the remote branch into yours)
+(use "git pull" to merge the remote branch into yours)
 
 All conflicts fixed but you are still merging.
 
-`  `(use "git commit" to conclude merge)
+(use "git commit" to conclude merge)
 
 Changes to be committed:
 
-`        `**modified:   f1**
+**modified:   f1**
 
-`        `**modified:   f2**
+**modified:   f2**
 
-`        `**modified:   f3**
+**modified:   f3**
 
-`	`**Añadimos ahora una modificación en f1**
+**Añadimos ahora una modificación en f1**
 
 **$ git status**
 
@@ -1234,31 +1235,31 @@ Your branch and 'origin/desarrollo' have diverged,
 
 and have 1 and 1 different commits each, respectively.
 
-`  `(use "git pull" to merge the remote branch into yours)
+(use "git pull" to merge the remote branch into yours)
 
 All conflicts fixed but you are still merging.
 
-`  `(use "git commit" to conclude merge)
+(use "git commit" to conclude merge)
 
 Changes to be committed:
 
-`        `modified:   f1
+modified:   f1
 
-`        `modified:   f2
+modified:   f2
 
-`        `modified:   f3
+modified:   f3
 
 Changes not staged for commit:
 
-`  `(use "git add <file>..." to update what will be committed)
+(use "git add <file>..." to update what will be committed)
 
-`  `(use "git checkout -- <file>..." to discard changes in working directory)
+(use "git checkout -- <file>..." to discard changes in working directory)
 
-`        `modified:   f1
+modified:   f1
 
-`      `**Es de esperar que si hacemos commit ahora, no se suba (al hacer push) los últimos cambios hechos en f1.**
+**Es de esperar que si hacemos commit ahora, no se suba (al hacer push) los últimos cambios hechos en f1.**
 
-`      `**Lo comprobamos, hacemos commit y vemos el nuevo estado:**
+**Lo comprobamos, hacemos commit y vemos el nuevo estado:**
 
 **$ git status**
 
@@ -1266,21 +1267,21 @@ On branch desarrollo
 
 Your branch is ahead of 'origin/desarrollo' by 2 commits.
 
-`  `(use "git push" to publish your local commits)
+(use "git push" to publish your local commits)
 
 Changes not staged for commit:
 
-`  `(use "git add <file>..." to update what will be committed)
+(use "git add <file>..." to update what will be committed)
 
-`  `(use "git checkout -- <file>..." to discard changes in working directory)
+(use "git checkout -- <file>..." to discard changes in working directory)
 
-`        `modified:   f1
+modified:   f1
 
-`   	`**hacemos push, y confirmamos que los últimos cambios hechos en f1 no han subido.**
+**hacemos push, y confirmamos que los últimos cambios hechos en f1 no han subido.**
 
 **Después del push, f1 sigue en estado modificado, pendiente de incorporar en los preparados para commit.**
 
-`	`**Si nos pasamos al entorno de antonio63j, y hacemos pull vemos:**
+**Si nos pasamos al entorno de antonio63j, y hacemos pull vemos:**
 
 **$ git pull**
 
@@ -1294,15 +1295,15 @@ Unpacking objects: 100% (6/6), done.
 
 From https://github.com/antonio63j/misNotas
 
-`   `5162a59..914c2b3  desarrollo -> origin/desarrollo
+5162a59..914c2b3  desarrollo -> origin/desarrollo
 
 Updating 5162a59..914c2b3
 
 Fast-forward
 
-` `f2 | 3 ++-
+f2 | 3 ++-
 
-` `1 file changed, 2 insertions(+), 1 deletion(-)
+1 file changed, 2 insertions(+), 1 deletion(-)
 
 **f2 y f3 se incluyeron en el push (de antonio63jun) pero coinciden con los locales de antonio63j, (¿fast-forward indica esto mismo?).**
 
@@ -1322,17 +1323,17 @@ Unpacking objects: 100% (5/5), done.
 
 From https://github.com/antonio63j/misNotas
 
-`   `9ad0524..5133ee5  desarrollo -> origin/desarrollo
+9ad0524..5133ee5  desarrollo -> origin/desarrollo
 
 Updating 9ad0524..5133ee5
 
 Fast-forward
 
-` `f2                       |   2 ++
+f2                       |   2 ++
 
-` `software/GitApuntes.docx | Bin 101513 -> 90556 bytes
+software/GitApuntes.docx | Bin 101513 -> 90556 bytes
 
-` `2 files changed, 2 insertions(+)
+2 files changed, 2 insertions(+)
 
 Tras el pull, f1 no se ha modificado y continua es estado pendiente de add.
 
@@ -1347,7 +1348,7 @@ Updating 5133ee5..1047f97
 
 error: Your local changes to the following files would be overwritten by merge:
 
-`        `f1
+f1
 
 Please commit your changes or stash them before you merge.
 
