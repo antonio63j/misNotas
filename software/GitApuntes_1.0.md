@@ -1,8 +1,6 @@
-
 [TOC]
 
 # Apuntes Git
-
 
 ## Estados de los archivos gestionados con Git:
 
@@ -20,7 +18,7 @@ El fichero modificado ha sido marcado para el siguiente commit.
 
 A un nivel superior existe otra división de los ficheros gestionados por git, tracked o untracked, que quiere decir que son seguidos o no por git.
 
-![](https://git-scm.com/figures/18333fig0106-tn.png)
+![](https://git-scm.com/figures/18333fig0106-tn.png)
 
 El directorio de Git es donde Git almacena los metadatos y la base de datos de objetos para tu proyecto. Es la parte más importante de Git, y es lo que se copia cuando clonas un repositorio desde otro ordenador.
 
@@ -32,15 +30,15 @@ El área de preparación es un sencillo archivo, generalmente contenido en tu di
 
 Here is where you will find Git configuration files on Windows:
 
-|**Location of Windows Git Config Files**|||
-| :-: | :- | :- |
-|**Scope**|**Location and Filename**|**Filename Only**|
-|System|<git-install-root>\mingw64\etc\gitconfig|gitconfig|
-|Global|C:\Users\username\.gitconfig|.gitconfig|
-|Local|<git-repo>\.git\config|config|
-|Worktree|<git-repo>\.git\config.worktree|config.worktree|
-|Portable|C:\ProgramData\Git\etc\config|config|
-|autenticacion|C:\Users\username\.git-credencials|.git-credencial|
+| **Location of Windows Git Config Files** |                                          |                   |
+|:----------------------------------------:|:---------------------------------------- |:----------------- |
+| **Scope**                                | **Location and Filename**                | **Filename Only** |
+| System                                   | <git-install-root>\mingw64\etc\gitconfig | gitconfig         |
+| Global                                   | C:\Users\username\.gitconfig             | .gitconfig        |
+| Local                                    | <git-repo>\.git\config                   | config            |
+| Worktree                                 | <git-repo>\.git\config.worktree          | config.worktree   |
+| Portable                                 | C:\ProgramData\Git\etc\config            | config            |
+| autenticacion                            | C:\Users\username\.git-credencials       | .git-credencial   |
 
 En .git-presencials colocamos usuario y el token de acceso a github en formato:
 
@@ -48,14 +46,14 @@ https://antonio63j:ghp\_qOiUSinLjHjy78SlLEpx6cRMhxxLo01OJkA3@github.com
 
 As for the location of the Linux Git configuration files, here is where you’ll find them on Ubuntu:
 
-|**Ubuntu Linux Git Config File Locations**|||
-| :-: | :- | :- |
-|**Scope**|**Location and Filename**|**Filename Only**|
-|System|~etc/gitconfig|gitconfig|
-|Global|~home/<username>/.gitconfig or ~root/.gitconfig|.gitconfig|
-|Local|<git-repo>/.git/config|config|
-|Worktree|<git-repo>/.git/config.worktree|config.worktree|
-|<p>Autentica</p><p>cion</p>|~etc/gitconfig|gitconfig|
+| **Ubuntu Linux Git Config File Locations** |                                                 |                   |
+|:------------------------------------------:|:----------------------------------------------- |:----------------- |
+| **Scope**                                  | **Location and Filename**                       | **Filename Only** |
+| System                                     | ~etc/gitconfig                                  | gitconfig         |
+| Global                                     | ~home/<username>/.gitconfig or ~root/.gitconfig | .gitconfig        |
+| Local                                      | <git-repo>/.git/config                          | config            |
+| Worktree                                   | <git-repo>/.git/config.worktree                 | config.worktree   |
+| <p>Autentica</p><p>cion</p>                | ~etc/gitconfig                                  | gitconfig         |
 
 El fichero de configuración -- global de Git es c:\Usuarios\usuario\.gitconfig
 
@@ -78,6 +76,8 @@ git config --list o git config --global –list
 Para mostrar los ficheros de configuración del proyecto:
 
 git config --list –show-origin
+
+
 
 ## Configuración diff y merge.
 
@@ -124,8 +124,6 @@ tool = meld
 cmd = \"C:\\Archivos de programa\\Meld\\meld\\meld.exe\" "$LOCAL" "$REMOTE"
 
 path = C:/Archivos de programa/Meld/meld/Meld.exe
-
-
 
 [mergetool]
 
@@ -256,9 +254,6 @@ Tenemos la opción de trabajar con la rama master, para ello “git checkout mas
 
 ¿Qué pasa si hay 2 ramas y además la rama master?
 
-
-
-
 **Comandos git:**
 
 git add  <fichero>, dos funciones:
@@ -359,10 +354,7 @@ git log –-branches –-not –-remotes, muestra los commits realizados pendien
 
 git log [–-follow] <fichero>/<path>, muestra los commits realizados sobre ese fichero o path, <fichero> puede ser un nombre de fichero o un template que identifique a un grupo de ficheros. Con –-follow sirve para los renames.  
 
-
-
 git merge branch1, hace merge del branch1 sobre la rama activa
-
 
 git mv  <fichero-from> <fichero-to>
 
@@ -420,8 +412,6 @@ Prueba hecha con rm –-cached <fichero>:
 
 git rm –-cached sobre <fichero> + modificado <fichero> + git push origin master, lo que ha ocurrido es que se ha eliminado <fichero> en el repositorio.
 
-
-
 CONSULTA
 
 git show <hash de un commit>:nombre/del/fichero > <fichero destino>, nos muestra el archive en ese momento
@@ -466,12 +456,10 @@ Existe una aplicación de git para ver visualmente el histórico: gitK
 
 https://github.com/*YOUR-USERNAME*/*YOUR-REPOSITORY*/settings
 
-
-
 **Colaborar en proyecto github:**
 
 1. fork sobre el repositorio del proyecto donde vamos a colaborar, por ejemplo repositorio  antonio63j/SpringRestOneToManyManyToMany. El fork hace ya una copia en nuestro espacio github. Con el usuario github antonio63jun, hacemos el fork.
-1. Nos colocamos en nuestro repositorio local, en la carpeta donde queremos colgar el proyecto y clonamos: 
+2. Nos colocamos en nuestro repositorio local, en la carpeta donde queremos colgar el proyecto y clonamos: 
 
 git clone <https://github.com/antonio63jun/SpringRestOneToManuManyToMane.git>
 
@@ -526,8 +514,6 @@ git push origin nueva-relacion-entidades
 Se crea el branch  nueva-relacion-entidades en github
 
 1. Implementados los cambios, generamos el “ pull request” para que el administrador del repo base lo revise y realice el merge. Desde github, tendremos que pinchar en pull request desde el branch “nueva-relacion-entidades”.
-
-
 
 **Pruebas realizadas:**
 
@@ -653,8 +639,6 @@ A continuación:
 
 *Current branch master is up to date.*
 
-
-
 En T270 decidimos crear una nueva rama, tal vez hubiese sido lo apropiado justo al principio de clonar el repo.
 
 git checkout –b Issue3
@@ -677,8 +661,7 @@ En T309, antonio63junio hace fork, crea la issue 4, clona el proyecto  y:
 
 345  git checkout -b rama-para-issue4
 
-
-se modifica README 
+se modifica README 
 
 git commit -a -m "modifica AREADME cambiando la fecha de comienzo"
 
@@ -702,27 +685,22 @@ git push origin rama-master-issue4
 
 En github.com, realizamos el pull request
 
-
 En definitiva, seguimos los mismos pasos descritos anteriormente (antonio63jun) para actualizar el repositorio base (el de antonio63j en github).
 
 Para actualizar el repositorio base en github.com de antonio63jun, hemos seguidos los pasos descritos en 
 
 [http://stackoverflow.com/questions/20984802/how-can-i-keep-my-fork-in-sync-without-adding-a-separate-remote/21131381#21131381](http://stackoverflow.com/questions/20984802/how-can-i-keep-my-fork-in-sync-without-adding-a-separate-remote/21131381%2321131381)., que parece equivalente a eliminar el repositorio y volver a hacer un fork.
 
-
 Reajuste de los ficheros controlados por git:
 
 1. ajustar fichero .gitignore
-1. git rm –-cache –r .
-
-
+2. git rm –-cache –r .
 
 1. git add .
 
-1. ver modificaciones con git status
+2. ver modificaciones con git status
 
-1. git –m commit
-
+3. git –m commit
 
 **Prueba 2:**
 
@@ -741,8 +719,6 @@ Si ahora hacemos (en pl2) git diff master origin/master, sí aparecen los cambio
 A continuación se hace merge (en pl2), git merge origin/master, y actualiza f1 en pl2. También vemos que mantiene los cambios realizados en pl2 sobre el fichero README. En este punto git diff origin/master master no presenta diferencias y cuando se hacer el commit en pl2, es cuando si se muestran las diferencias entre las dos ramas, en este caso vemos los cambios del fichero README.
 
 En este punto hacemos git push origin master.
-
-
 
 prueba 2.2:
 
@@ -856,7 +832,6 @@ Se modifica f2, luego add + commit + push
 
 Tres usuarios trabajando sobre el proyecto misNotas en la rama desarrollo y con repositorio en github.com. En estado inicial, los tres tienen el proyecto sincronizado con el repositorio base. 
 
-
 - Antonio63j:
 
 Modifica f1, f2 + add + commit + push
@@ -905,11 +880,7 @@ Luego add f1, y a continuación hace pull mostrando:
 
 *Aborting*
 
-
-
 f2, no se ha actualizado.
-
-
 
 Luego se hace commit y a continuación se hace pull mostrando:
 
@@ -998,8 +969,6 @@ f2.txt | 2 ++
 Si hacemos git status, nos muestra que no hay nada que añadir ni que commitear.
 
 **$ git push**, sin problemas en la actualización, se informa de que se han subido dos objetos.
-
-
 
 - Antonio63j:
 
@@ -1093,8 +1062,6 @@ Dos usuarios trabajando sobre el proyecto misNotas en la rama desarrollo y con r
 
 **$ git push**
 
-
-
 - Antonio63jun:
 
 **Modifica f2 y hacemos pull**
@@ -1165,10 +1132,6 @@ antonio63j, en 2017/10/09 14:00
 
 Indica lo que entiende que debería incorporar debido al f2 del repositorio.
 
-
-
-
-
 **$ git status**
 
 On branch desarrollo
@@ -1197,7 +1160,6 @@ Unmerged paths:
 
 both modified:   f2
 **
-
 
 **En esta situación podemos entrar en f2 y asumir las indicaciones de git y después git add f2 o podemos hacer el merge con la herramienta configurada (git mergetool):**
 
@@ -1337,7 +1299,6 @@ software/GitApuntes.docx | Bin 101513 -> 90556 bytes
 
 Tras el pull, f1 no se ha modificado y continua es estado pendiente de add.
 
-
 **antonio63j, modifica f1 y f3 y hace push**
 
 **Pasamos ahora al entorno de antonio63j, que hace pull:**
@@ -1355,12 +1316,3 @@ Please commit your changes or stash them before you merge.
 Aborting
 
 **Conclusión, si en el pull exite algún fichero que tenemos modificado en local, no se modifica nada de local.**
-
-
-
-
-
-
-
-
-
