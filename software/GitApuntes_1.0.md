@@ -58,7 +58,7 @@ As for the location of the Linux Git configuration files, here is where you’ll
 
 Podemos utilizar 
 `git --global credencial.helper store`
-Y cuando pongamos el PAT en algún comando git, este se guardará en /home/username.git-credencials
+Y cuando pongamos el PAT en algún comando git, como por ejemplo un push, este se guardará en /home/username.git-credencials
 
 El fichero de configuración -- global de Git es c:\Usuarios\usuario\.gitconfig
 
