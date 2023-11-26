@@ -1,4 +1,7 @@
-Lo## Ubuntu 20.04
+
+[TOC]
+
+## Ubuntu 20.04
 
 - instalar openjdk8
 - instalar postgresql (version 12)
@@ -44,13 +47,14 @@ certbot certonly \
            -d *.fernandezlucena.es
 ```
 
- Este script se detiene hasta que damos "enter",  nos ofrece una valor que deberemos colocar en el registro _acme-challenge del dominio (hostinet), y una vez que hayamos comprovado que se ha desplegado en la red, pulsamos "enter", a continuación se nos ofrecerá dónde se ha colocado el certificados y fecha de validez. 
+ Ejecutar el script con sudo. Este script se detiene hasta que damos "enter",  nos ofrece una valor que deberemos colocar en el registro _acme-challenge del dominio (hostinet), y una vez que hayamos comprovado que se ha desplegado en la red, pulsamos "enter", a continuación se nos ofrecerá dónde se ha colocado el certificados y fecha de validez. 
 
 Podemos comprovar que el registro _acme-callenge se ha desplegado con el comando:
 
 ```
 host -t txt _acme-challenge.fernandezlucena.es     
 ```
+También se puede comprobar la propagación [aquí ](https://www.whatsmydns.net/#CNAME/aflcv.fernandezlucena.es)
 
 Si ya tenemos generado algún certificado, numera los directorios donde se colocan los certificados. El script de arriba, genera los certificados en  /etc/letsencrypt/live/fernandezlucena.es-0001/.
 
@@ -96,11 +100,11 @@ Con estos certificados, establecer en el registro tipo "TXT" con nombre "_acme-c
 
 lwDPVxbhSJPBeDzMD6apDYxosWmBSAEAFPyB6dFDd2M
 
-![](/software/adjuntos/DNS-Configuracion.jpg)
+![](/linux/adjuntos/DNS-Configuracion.jpg)
 
 Así ha quedado la configuración tras los cambios en la migración de hostinet.
 
-![](/software/adjuntos/nueva-cfg-resgistros-dns-hostinet.png)
+![](/linux/adjuntos/nueva-cfg-resgistros-dns-hostinet.png)
 
 
 ## Certificados para emails
@@ -121,8 +125,8 @@ sudo certbot certonly --standalone --rsa-key-size 4096 --agree-tos --preferred-c
 
 certbot nos mostrará:
 
-- ```
-  antonio@fernandezlucena:~$ sudo certbot certonly --standalone --rsa-key-size 4096 --agree-tos --preferred-challenges http -d fernandezlucena.es
+```
+antonio@fernandezlucena:~$ sudo certbot certonly --standalone --rsa-key-size 4096 --agree-tos --preferred-challenges http -d fernandezlucena.es
   Saving debug log to /var/log/letsencrypt/letsencrypt.log
   Plugins selected: Authenticator standalone, Installer None
   Cert not yet due for renewal
@@ -157,9 +161,10 @@ certbot nos mostrará:
   
      Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
      Donating to EFF:                    https://eff.org/donate-le
-  ```
-
-**Configuración del correo electrónico**
+ 
+```
+ 
+ **Configuración del correo electrónico**
 
 Instalación de postfix y dovecot
 
@@ -176,6 +181,7 @@ Adaptar ficheros de configuracion:
 Abrir puertos:
 
 ​    ports 25 (SMTP) ok, 587 (SMTP over TLS) ok, 465 (SMTPS) ok, 143 (IMAP) ok, 993 (IMAPS) ok, 110 (POP3) ok, 995 (POP3S) ok
+
 
 Ver estado del servicio postfix:
 
@@ -209,8 +215,8 @@ Eliminar cola de correos
 
 Eliminar cola de correos diferidos
 <mark>sudo postsuper -d ALL deferred</mark>
-
-**Creación de servicios systemctl**
+  
+## Servicios systemctl
 
 - generar el servicio systemctl, para ello creamos el archivo 
   etc/systemd/system/aflcv-service.service:
@@ -413,7 +419,7 @@ También habría que añadir keystore.p12 (para https)
 •    21 directories, 70 files
 ```
 
-**Instalacion del front (sin universal):**
+## Instalacion del front (sin universal):
 
 Creamos dist para producción (**npm run – ng build –prod**)
 En \home\antonio\www\restaurante-front creamos un carpetas con nombre 
@@ -508,7 +514,7 @@ antonio@fernandezlucena:~/www/restaurante-front$ **tree -I node_modules**:
         └── styles.b4ddf2dbc5795ba15b24.css
 ```
 
-**Instalacion del front (con universal):**
+## Instalacion del front (con universal):
 
 Al añadir universal al proyecto se creó un fichero server.ts, este fichero hay que retocarlo para poner el puerto de escucha para servir los ficheros al navegador, en este caso el puerto 8074 (restaurante.fernandezlucena.es). Esto se reflejará en el main.js, que finalmente atiendo el puerto 8074. Ver como se utiliza este ejecutable (main.js) cuando se describe el servicio "metarestaurante-front.service".
 
@@ -573,3 +579,7 @@ WantedBy=multi-user.target
 ```
 
 **SEO**: debemos ir a google search console, para indicar las paginas a indexar y asigna el sitemap.xmlsb
+
+
+  
+
