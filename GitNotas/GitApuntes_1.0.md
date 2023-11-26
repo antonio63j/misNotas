@@ -220,7 +220,7 @@ aflucena@AFLUCENAPW7 MINGW32 /d/temp/pruebasclone/misNotas/software ((c539c85...
 
 $
 
-Si queremos trabajar en la rama de desarrollo, hacemos 
+Si queremos trabajar en la rama de desarrollo, ejecutamos:
 
 $ git checkout desarrollo
 
