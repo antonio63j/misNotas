@@ -1,4 +1,7 @@
 
+<h1 align="center"><img src="https://placekitten.com/300/150"/></h1>
+
+
 [TOC]
 
 ## Ubuntu 20.04
@@ -54,6 +57,7 @@ Podemos comprovar que el registro _acme-callenge se ha desplegado con el comando
 ```
 host -t txt _acme-challenge.fernandezlucena.es     
 ```
+
 También se puede comprobar la propagación [aquí ](https://www.whatsmydns.net/#CNAME/aflcv.fernandezlucena.es)
 
 Si ya tenemos generado algún certificado, numera los directorios donde se colocan los certificados. El script de arriba, genera los certificados en  /etc/letsencrypt/live/fernandezlucena.es-0001/.
@@ -69,7 +73,7 @@ tima renovacion, que ha dejado los certificados en
 Crear certificado .p12 para la aplicación spring boot. Si 
 
 ```
-openssl pkcs12 -export -in /etc/letsencrypt/live/fdusoernandezlucena.es-0001/fullchain.pem \
+openssl pkcs12 -export -in /etc/letsencrypt/live/fernandezlucena.es-0001/fullchain.pem \
                -inkey /etc/letsencrypt/live/fernandezlucena.es-0001/privkey.pem \
                -out ./www/aflcv-back/keystore.p12 \
                -name tomcat \
@@ -106,7 +110,6 @@ Así ha quedado la configuración tras los cambios en la migración de hostinet.
 
 ![](/linux/adjuntos/nueva-cfg-resgistros-dns-hostinet.png)
 
-
 ## Certificados para emails
 
 Para renovar el certrificado, tenemos que parar el servicio nginx, crear el nuevo certificado y arrancar nginx.
@@ -130,24 +133,24 @@ antonio@fernandezlucena:~$ sudo certbot certonly --standalone --rsa-key-size 409
   Saving debug log to /var/log/letsencrypt/letsencrypt.log
   Plugins selected: Authenticator standalone, Installer None
   Cert not yet due for renewal
-  
+
   You have an existing certificate that has exactly the same domains or certificate name you requested and isn't close to expiry.
   (ref: /etc/letsencrypt/renewal/fernandezlucena.es.conf)
-  
+
   What would you like to do?
-  
+
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   1: Keep the existing certificate for now
   2: Renew & replace the certificate (may be subject to CA rate limits)
-  
+
   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
   Select the appropriate number [1-2] then [enter] (press 'c' to cancel): 2
   Renewing an existing certificate for fernandezlucena.es
-  
+
   IMPORTANT NOTES:
-  
+
    - Congratulations! Your certificate and chain have been saved at:
      /etc/letsencrypt/live/fernandezlucena.es/fullchain.pem
      Your key file has been saved at:
@@ -156,14 +159,13 @@ antonio@fernandezlucena:~$ sudo certbot certonly --standalone --rsa-key-size 409
      tweaked version of this certificate in the future, simply run
      certbot again. To non-interactively renew *all* of your
      certificates, run "certbot renew"
-  
+
    - If you like Certbot, please consider supporting our work by:
-  
+
      Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
      Donating to EFF:                    https://eff.org/donate-le
- 
 ```
- 
+
  **Configuración del correo electrónico**
 
 Instalación de postfix y dovecot
@@ -181,7 +183,6 @@ Adaptar ficheros de configuracion:
 Abrir puertos:
 
 ​    ports 25 (SMTP) ok, 587 (SMTP over TLS) ok, 465 (SMTPS) ok, 143 (IMAP) ok, 993 (IMAPS) ok, 110 (POP3) ok, 995 (POP3S) ok
-
 
 Ver estado del servicio postfix:
 
@@ -215,7 +216,7 @@ Eliminar cola de correos
 
 Eliminar cola de correos diferidos
 <mark>sudo postsuper -d ALL deferred</mark>
-  
+
 ## Servicios systemctl
 
 - generar el servicio systemctl, para ello creamos el archivo 
@@ -579,7 +580,3 @@ WantedBy=multi-user.target
 ```
 
 **SEO**: debemos ir a google search console, para indicar las paginas a indexar y asigna el sitemap.xmlsb
-
-
-  
-

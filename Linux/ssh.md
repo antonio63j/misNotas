@@ -4,6 +4,8 @@ tag: linux
 autor: antonio
 ---
 
+<h1 align="center"><img src="https://placekitten.com/300/150"/></h1>
+
 [TOC]
  
 ## Crear el par de claves
