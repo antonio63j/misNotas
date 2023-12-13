@@ -22,7 +22,15 @@ Instalamos la última versión LTS de node con nvm (node 20.10)
 
 # Certificados
 
-## Certificados para web de letsencrypt
+[postfix web](https://www.postfix.org)
+
+[certbot web](https://certbot.eff.org/)
+
+[letsencrypt web](https://letsencrypt.org/es)
+
+[crear certificados para nginx](https://nolifelover.medium.com/create-a-reverse-proxy-for-your-application-using-nginx-and-certbot-25fe971682c6)
+
+## Certificados wildcard para web de letsencrypt
 
   Instalamos con apt snap certbot, en ubuntu 20.04 ya viene instalado openssl y git
 
@@ -44,13 +52,15 @@ snap list
 
 a fecha 30/05/2023:
 
-`antonio@fernandezlucena:~$ snap list
+```
+antonio@fernandezlucena:~$ snap list
 Name     Version   Rev    Tracking       Publisher     Notes
 certbot  2.6.0     3024   latest/stable  certbot-eff✓  classic
 core20   20230503  1891   latest/stable  canonical✓    base
 snapd    2.59.2    19122  latest/stable  canonical✓    snapd`
+```
 
-Crear certificado, hay un script para ello en /home/antonio:
+Crear certificado wildcard, hay un script para ello en /home/antonio:
 
 ```
 certbot certonly \
@@ -76,12 +86,10 @@ Si ya tenemos generado algún certificado, numera los directorios donde se coloc
 Para renobar los certificados sería:
 
 ```
-sudo certbot renew (úl
-tima renovacion, que ha dejado los certificados en 
-  /etc/letsencrypt/live/fernandezlucena.es-0001/)
+sudo certbot renew (última renovacion, que ha dejado los certificados en /etc/letsencrypt/live/fernandezlucena.es-0001/)
 ```
 
-Crear certificado .p12 para la aplicación spring boot. Si
+Crear certificado .p12 para la aplicación spring boot.
 
 ```
 openssl pkcs12 -export -in /etc/letsencrypt/live/fernandezlucena.es-0001/fullchain.pem \
@@ -90,23 +98,6 @@ openssl pkcs12 -export -in /etc/letsencrypt/live/fernandezlucena.es-0001/fullcha
                -name tomcat \
                -CAfile /etc/letsencrypt/live/fernandezlucena.es-0001/chain.pem \
                -caname caname
-```
-
-Para ver el estado de los certificados:
-
-```
-sudo certbot --config-dir /home/antonio/config-dir certificates
-Saving debug log to /var/log/letsencrypt/letsencrypt.log
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-Found the following certs:
-  Certificate Name: fernandezlucena.es
-    Serial Number: 3da014eee84924d3359b8f2b66a893ec99a
-    Domains: *.fernandezlucena.es
-    Expiry Date: 2020-11-25 19:09:58+00:00 (VALID: 33 days)
-    Certificate Path: /home/antonio/config-dir/live/fernandezlucena.es/fullchain.pem
-    Private Key Path: /home/antonio/config-dir/live/fernandezlucena.es/privkey.pem
 ```
 
 Con estos certificados, establecer en el registro tipo "TXT" con nombre "_acme-challenge" y dominio "fernandezlucena" el valor:
@@ -174,13 +165,191 @@ antonio@fernandezlucena:~$ sudo certbot certonly --standalone --rsa-key-size 409
 
 ```
 
+## Gestión de certificados letsencrypt
+
+`Para ver el estado de los certificados`
+
+```
+sudo certbot [--config-dir /home/antonio/config-dir] certificates
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+Found the following certs:
+  Certificate Name: fernandezlucena.es
+    Serial Number: 3da014eee84924d3359b8f2b66a893ec99a
+    Domains: *.fernandezlucena.es
+    Expiry Date: 2020-11-25 19:09:58+00:00 (VALID: 33 days)
+    Certificate Path: /home/antonio/config-dir/live/fernandezlucena.es/fullchain.pem
+    Private Key Path: /home/antonio/config-dir/live/fernandezlucena.es/privkey.pem
+```
+
+`Podemos ver la esctructura de certificados letsencrypt:`
+
+Vemos dos certificados uno generado con la opccion --nginx para el subdominio metarestaurante.ajamam.es y otro para el dominio fernandezlucena.es que nos sirve para los servidores de email.
+
+```
+sudo tree -r /etc/letsencrypt 
+
+/etc/letsencrypt
+├── ssl-dhparams.pem
+├── renewal-hooks
+│   ├── pre
+│   ├── post
+│   └── deploy
+├── renewal
+│   ├── metarestaurante.ajamam.es.conf
+│   └── ajamam.es.conf
+├── options-ssl-nginx.conf
+├── live
+│   ├── metarestaurante.ajamam.es
+│   │   ├── privkey.pem -> ../../archive/metarestaurante.ajamam.es/privkey2.pem
+│   │   ├── fullchain.pem -> ../../archive/metarestaurante.ajamam.es/fullchain2.pem
+│   │   ├── chain.pem -> ../../archive/metarestaurante.ajamam.es/chain2.pem
+│   │   ├── cert.pem -> ../../archive/metarestaurante.ajamam.es/cert2.pem
+│   │   └── README
+│   ├── ajamam.es
+│   │   ├── privkey.pem -> ../../archive/ajamam.es/privkey1.pem
+│   │   ├── fullchain.pem -> ../../archive/ajamam.es/fullchain1.pem
+│   │   ├── chain.pem -> ../../archive/ajamam.es/chain1.pem
+│   │   ├── cert.pem -> ../../archive/ajamam.es/cert1.pem
+│   │   └── README
+│   └── README
+├── keys
+│   ├── 0003_key-certbot.pem
+│   ├── 0002_key-certbot.pem
+│   ├── 0001_key-certbot.pem
+│   └── 0000_key-certbot.pem
+├── csr
+│   ├── 0003_csr-certbot.pem
+│   ├── 0002_csr-certbot.pem
+│   ├── 0001_csr-certbot.pem
+│   └── 0000_csr-certbot.pem
+├── cli.ini
+├── archive
+│   ├── metarestaurante.ajamam.es
+│   │   ├── privkey2.pem
+│   │   ├── privkey1.pem
+│   │   ├── fullchain2.pem
+│   │   ├── fullchain1.pem
+│   │   ├── chain2.pem
+│   │   ├── chain1.pem
+│   │   ├── cert2.pem
+│   │   └── cert1.pem
+│   └── ajamam.es
+│       ├── privkey1.pem
+│       ├── fullchain1.pem
+│       ├── chain1.pem
+│       └── cert1.pem
+└── accounts
+    └── acme-v02.api.letsencrypt.org
+        └── directory
+            └── 6437f42aed1a2cc218a6df81928db4f9
+                ├── regr.json
+                ├── private_key.json
+                └── meta.json
+```
+
+`Para eliminar un certificado`
+
+```
+certbot delete --cert-name mywebsite.com
+```
+
+`Parar la renovación de un certificado sin eliminarlo`
+
+  ```
+  mv /etc/letsencrypt/renew/<cert-name>.conf  /etc/letsencrypt/renew/<cert-name>.conf.disabled
+  ```
+
+`Chequear los timers de certbot`
+
+```text
+systemctl list-timers
+
+NEXT                        LEFT          LAST                        PASSED       UNIT                           ACTIVATES         >
+Sat 2023-12-09 05:21:31 CET 6h left       Fri 2023-12-08 19:37:15 CET 3h 17min ago certbot.timer                 certbot.service
+
+```
+`Para ver el estado del servicio`
+
+```text
+antonio@ajamam:~$ sudo systemctl status certbot.service
+○ certbot.service - Certbot
+     Loaded: loaded (/lib/systemd/system/certbot.service; static)
+     Active: inactive (dead) since Fri 2023-12-08 19:37:16 CET; 3h 43min ago
+TriggeredBy: ● certbot.timer
+       Docs: file:///usr/share/doc/python-certbot-doc/html/index.html
+             https://certbot.eff.org/docs
+    Process: 221512 ExecStart=/usr/bin/certbot -q renew (code=exited, status=0/SUCCESS)
+   Main PID: 221512 (code=exited, status=0/SUCCESS)
+        CPU: 1.360s
+
+Dec 08 19:37:15 ajamam systemd[1]: Starting Certbot...
+Dec 08 19:37:16 ajamam systemd[1]: certbot.service: Deactivated successfully.
+Dec 08 19:37:16 ajamam systemd[1]: Finished Certbot.
+Dec 08 19:37:16 ajamam systemd[1]: certbot.service: Consumed 1.360s CPU time.
+```
+
+`Para ver la configuración del servicio certbot.service`
+
+```text
+antonio@ajamam:~$ sudo cat /lib/systemd/system/certbot.service
+[Unit]
+Description=Certbot
+Documentation=file:///usr/share/doc/python-certbot-doc/html/index.html
+Documentation=https://certbot.eff.org/docs
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/certbot -q renew
+PrivateTmp=true
+```
+
+`La configuración del timer`
+
+```
+antonio@ajamam:~$ sudo cat /lib/systemd/system/certbot.timer
+[Unit]
+Description=Run certbot twice daily
+
+[Timer]
+OnCalendar=*-*-* 00,12:00:00
+RandomizedDelaySec=43200
+Persistent=true
+```
+
+
+`Mostrar los resultado de la renovación de certificdos`
+```text
+sudo journalctl --follow -u certbot --since "2023-12-11 16:10:00"
+```
+
 ## Certificados para web y email de Ionos
+   
+   El certificado wildcard porporcionado por Ionos es válido para web y para email. Utilizando letsencrypt con cerbot, se ha tenido que generar un certificado wildcar para web *.dominio.es y otro para postfix y dovecot.
 
    Desde la página de ionos, hacemos download de la clave privada (dominio-cert-ssl-private.key) y luego del certificado para el cominio *.ajamam.es (dominio-cert-ssl.cer), y el certificado de la CA (dominio-cert-ssl-CA.cer).
    Genemos el fichero fullchain.cer concatenando al certificado del dominio, el certificado de la CA (este último queda al final del fichero).
 
-   Generamos el p12 utilizado por la aplicacion spring REST:
+**Certificados y clave privada proporcionados por ionos**
 
+_.ajamam.es_private_key.key
+
+_.ajamam.es_ssl_certificate_INTERMEDIATE.cer (certificado de la CA)
+
+ajamam.es_ssl_certificate.cer
+
+**Cambio de nombres de los certificados y clave y generación de fullchain**
+
+dominio-cert-ssl-CA.cer = _.ajamam.es_ssl_certificate_INTERMEDIATE.cer
+
+dominio-cert-ssl-fullchain.cer = ajamam.es_ssl_certificate.cer + _.ajamam.es_ssl_certificate_INTERMEDIATE.cer
+
+dominio-cert-ssl-private.key = _.ajamam.es_private_key.key
+
+dominio-cert-ssl.cer = ajamam.es_ssl_certificate.cer
+
+`Generamos el p12 utilizado por la aplicacion spring REST:`
 ```
    openssl pkcs12 -export -in /home/antonio/certificados/dominio-cert-ssl.cer \
                -inkey /home/antonio/certificados/dominio-cert-ssl-private.key \
@@ -192,55 +361,167 @@ antonio@fernandezlucena:~$ sudo certbot certonly --standalone --rsa-key-size 409
 
 ## Instalacioón y configuración del correo electrónico
 
-Instalación de postfix y dovecot
+**Postfix**
 
-Para dovecot, solo se ha instalado imap
+```
+sudo apt install postfix
+```
+
+`Utilidad para configurar postfix`
+
+```
+sudo dpkg-reconfigure postfix
+
+```
+
+`Ficheros de postfix a modificar`
+```
+/etc/postfix/main.cf
+/etc/postfix/master.cf
+/etc/opendkim.conf
+/etc/opendkim/*
+```
+
+`Algunos cambios en /etc/postfix/main.cf`
+
+```
+antonio@ajamam:~$ sudo postconf -e 'home_mailbox= Maildir/'
+antonio@ajamam:~$ sudo postconf -e 'virtual_alias_maps= hash:/etc/postfix/virtual'
+antonio@ajamam:~$ sudo nano /etc/postfix/virtual
+antonio@ajamam:~$ sudo postmap /etc/postfix/vihisrtual
+```
+
+`Instalar mailutils para envio de corres y pruebas`
+
+```
+sudo apk install mailutils
+```
+
+`IMPORTANTE: Los registros del servidor de nombres SPF Y DKIM`
+
+[Pincha aquí para una explicación extendida](https://www.linuxbabe.com/mail-server/setting-up-dkim-and-spf)
+
+[Aquí también se explica posfix, opendkim y dmarc](https://blog.tiraquelibras.com/?p=660)
+
+[Enlace para instalar postfix y dovecot](https://www.linuxbabe.com/mail-server/secure-email-server-ubuntu-postfix-dovecot)
+
+El registro SPF (Marco de políticas del remitente) especifica qué hosts o direcciones IP pueden enviar correos electrónicos en nombre de un dominio . Debe permitir que sólo su propio servidor de correo electrónico o el servidor de su ISP envíen correos electrónicos para su dominio.
+
+```
+TXT  @   v=spf1 mx ~all
+```
+~all indicamos que solo tener en cuenta la ip del servidor de correo
+
+**Queda pendiente de aplicar en servidor, la gestión de la política SPF para correos entrantes. Ir a la explicación extendida.**
+
+
+DKIM (DomainKeys Identified Mail) utiliza una clave privada para agregar una firma a los correos electrónicos enviados desde su dominio . Los servidores SMTP receptores verifican la firma utilizando la clave pública correspondiente, que está publicada en su administrador de DNS.
+
+`Instalación de OPENDKIM`
+
+```
+sudo apt install opendkim opendkim-tools
+```
 
 Adaptar ficheros de configuracion:
+​    
 
-​    /etc/postfix/main.cf
 ​    /etc/dovecot/conf.d/10-auth.conf
+
 ​    /etc/dovecot/conf.d/10-mail.conf
+
 ​    /etc/dovecot/conf.d/10-ssl.conf
+
 ​    /etc/dovecot/conf.d/10-master.conf
+
 ​    /etc/dovecot/dovecot.conf
 
 Abrir puertos:
 
 ​    ports 25 (SMTP) ok, 587 (SMTP over TLS) ok, 465 (SMTPS) ok, 143 (IMAP) ok, 993 (IMAPS) ok, 110 (POP3) ok, 995 (POP3S) ok
 
-Ver estado del servicio postfix:
+`Ver estado del servicio postfix:`
 
-​ ver las instancias creadas por postfix
+```console
+sudo systemctl status postfix
+```
 
-<mark>sudo systemctl -l status postfix@-</mark>
+`Ver la configuarción de postfix' 
 
-Ver la configuarción de postfix
+```console
+sudo postconf
+```
 
-<mark>sudo postconf</mark>
+`enviar correo de prueba`
 
-enviar correo de prueba
+```console
+echo "Subject:Correo Maildir 1" | sendmail <info@fernandezlucena.es>
+```
 
-<mark>echo "Subject:Correo Maildir 1" | sendmail info@fernandezlucena.es</mark>
+`Ver log`
 
-Ver log:
+```console
+sudo tail -f -n 200 /var/log/mail.log
+```
 
-<mark>sudo tail -f /var/log/mail.log</mark>
+`Ver los correos del usurario info`
 
-Ver los correos del usurario info:
-<mark>mail -f /home/info/Maildir</mark>
+```console
+mail -f /home/info/Maildir
+```
 
-Ver protocolos instalados por dovecot:
-<mark>sudo cat /usr/share/dovecot/protocols.d/*.protocol</mark>
+`Ver protocolos instalados por dovecot`
 
-Ver cola de correos de un usuario
-<mark>mailq</mark>
+```console
+sudo cat /usr/share/dovecot/protocols.d/*.protocol
+```
 
-Eliminar cola de correos
-<mark>sudo postsuper -d ALL</mark>
+`Ver cola de correos de un usuario`
 
-Eliminar cola de correos diferidos
-<mark>sudo postsuper -d ALL deferred</mark>
+```consolesu
+mailq
+```
+
+`Eliminar cola de correos`
+
+```python
+sudo postsuper -d ALL
+```
+
+`Eliminar cola de correos diferidos`
+
+```python
+sudo postsuper -d ALL deferred
+```
+
+`Enviar email`
+
+```python
+mail -s "Email simple enviado desde la terminal" nonaino@mail.com
+```
+
+`Ver cabecera y cola de un correo`
+
+``` consola
+postcat -q ID-Correo
+```
+
+`Eliminar un correo determinado en cola`
+
+```
+postsuper -d ALL
+```
+
+`Eliminar todos los correos devueltos`
+
+```consola
+postsuper -d ALL deferred
+```
+
+
+`Comprobación de calidad de nuestros correos`
+
+[En este enlace puedes hacer la evalucación](https://www.mail-tester.com/)
 
 ## Servicios systemctl
 
