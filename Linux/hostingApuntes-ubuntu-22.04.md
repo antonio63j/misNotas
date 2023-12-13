@@ -511,7 +511,7 @@ postcat -q ID-Correo
 ```
 postsuper -d ALL
 ```
-
+status
 `Eliminar todos los correos devueltos`
 
 ```consola
