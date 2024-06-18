@@ -1,6 +1,25 @@
-[TOC]
+<!-- TOC -->
 
-# Ubuntu 22.04 (ionos)
+- [Herramientas instaladas en Ubuntu 22.04 ionos](#herramientas-instaladas-en-ubuntu-2204-ionos)
+- [Certificados](#certificados)
+    - [Certificados wildcard para web de letsencrypt](#certificados-wildcard-para-web-de-letsencrypt)
+    - [Crear certificado .p12 para la aplicación spring boot](#crear-certificado-p12-para-la-aplicaci%C3%B3n-spring-boot)
+    - [Ejemplos configuración DNS para dominios wildcards](#ejemplos-configuraci%C3%B3n-dns-para-dominios-wildcards)
+    - [Certificados para emails de letsencrypt](#certificados-para-emails-de-letsencrypt)
+    - [Gestión de certificados letsencrypt](#gesti%C3%B3n-de-certificados-letsencrypt)
+    - [Certificados para web y email de Ionos](#certificados-para-web-y-email-de-ionos)
+- [Instalacioón y configuración del correo electrónico](#instalacio%C3%B3n-y-configuraci%C3%B3n-del-correo-electr%C3%B3nico)
+- [Servicios systemctl](#servicios-systemctl)
+    - [Deploy en servidor fernandezlucena.es](#deploy-en-servidor-fernandezlucenaes)
+    - [Configuaración reverse proxies de nginx](#configuaraci%C3%B3n-reverse-proxies-de-nginx)
+- [Instalacion del front sin universal](#instalacion-del-front-sin-universal)
+- [Instalacion del front con universal](#instalacion-del-front-con-universal)
+
+<!-- /TOC -->
+
+# Herramientas instaladas en Ubuntu 22.04 (ionos)
+
+- instalar antivirus ClamAV
 
 - instalar openjdk8
 
@@ -10,7 +29,7 @@
 
   sudo apt install postgresql postgresql-contrib
 
-- snap ya viene instalado, certbot (con snap), dovecot, postfix,  opendKim,
+- snap ya viene instalado, certbot (con snap), dovecot, postfix,  opendKim, dmarc
 
 - nvm, node (con nvm):
 
@@ -35,7 +54,7 @@ Instalamos la última versión LTS de node con nvm (node 20.10)
   Instalamos con apt snap certbot, en ubuntu 20.04 ya viene instalado openssl y git
 
 ```
-`sudo snap install certbot --classic`
+sudo snap install certbot --classic
 ```
 
 la instalacion de certbot no será visible con
@@ -60,6 +79,8 @@ core20   20230503  1891   latest/stable  canonical✓    base
 snapd    2.59.2    19122  latest/stable  canonical✓    snapd`
 ```
 
+[En esta página se explica como podemos generar un certificado wildcard](https://medium.com/@martin.hodges/adding-a-wildcard-lets-encrypt-certificate-to-your-server-without-a-web-server-2e86e4e292ab)
+
 Crear certificado wildcard, hay un script para ello en /home/antonio:
 
 ```
@@ -75,7 +96,7 @@ certbot certonly \
 
 Podemos comprovar que el registro _acme-callenge se ha desplegado con el comando:
 
-```
+``` consola
 host -t txt _acme-challenge.fernandezlucena.es     
 ```
 
@@ -83,13 +104,40 @@ También se puede comprobar la propagación [aquí](https://www.whatsmydns.net/#
 
 Si ya tenemos generado algún certificado, numera los directorios donde se colocan los certificados. El script de arriba, genera los certificados en  /etc/letsencrypt/live/fernandezlucena.es-0001/.
 
-Para renobar los certificados sería:
+Al indicar "--manual" en el comando certbot, tendremos que renobar nosotros mismos, no lo hará automáticamente letsencrypt. Para renobar los certificados sería:
 
 ```
 sudo certbot renew (última renovacion, que ha dejado los certificados en /etc/letsencrypt/live/fernandezlucena.es-0001/)
 ```
 
-Crear certificado .p12 para la aplicación spring boot.
+Podremos crear un trabajo cron para que intente actualizar diariamente:
+
+```
+sudo crontab -e
+```
+
+y añadiendo la linea :
+
+```
+0 12 * * * /usr/bin/certbot renew --quiet
+```
+
+Podemos renovar manualmente con 
+
+```
+sudo certbot renew --dry-run
+```
+Que también ejecuta los scripts de los directorios  
+
+```
+/etc/letsencrypt
+├── renewal-hooks
+│   ├── pre
+│   ├── post
+│   └── deploy
+```
+
+## Crear certificado .p12 para la aplicación spring boot
 
 ```
 openssl pkcs12 -export -in /etc/letsencrypt/live/fernandezlucena.es-0001/fullchain.pem \
@@ -100,15 +148,15 @@ openssl pkcs12 -export -in /etc/letsencrypt/live/fernandezlucena.es-0001/fullcha
                -caname caname
 ```
 
-Con estos certificados, establecer en el registro tipo "TXT" con nombre "_acme-challenge" y dominio "fernandezlucena" el valor:
-
-lwDPVxbhSJPBeDzMD6apDYxosWmBSAEAFPyB6dFDd2M
+## Ejemplos configuración DNS para dominios wildcards
 
 ![](/linux/adjuntos/DNS-Configuracion.jpg)
 
-Así ha quedado la configuración tras los cambios en la migración de hostinet.
+[Así ha quedado la configuración tras los cambios en la migración de hostinet](/linux/adjuntos/nueva-cfg-resgistros-dns-hostinet.png)
 
-![](/linux/adjuntos/nueva-cfg-resgistros-dns-hostinet.png)
+[Ver configuración dns en hostinet de fernandezlucena.es a 2024/01/20](/linux/adjuntos/fernandezlucena.es_2024.01.20_23.17.50.txt)
+
+[Registros dns en ionos del dominio ajamam.es](/linux/adjuntos/cfg-ionos-dns-ajamam.png)
 
 ## Certificados para emails de letsencrypt
 
@@ -167,7 +215,7 @@ antonio@fernandezlucena:~$ sudo certbot certonly --standalone --rsa-key-size 409
 
 ## Gestión de certificados letsencrypt
 
-`Para ver el estado de los certificados`
+Para ver el estado de los certificados
 
 ```
 sudo certbot [--config-dir /home/antonio/config-dir] certificates
@@ -184,11 +232,11 @@ Found the following certs:
     Private Key Path: /home/antonio/config-dir/live/fernandezlucena.es/privkey.pem
 ```
 
-`Podemos ver la esctructura de certificados letsencrypt:`
+Podemos ver la esctructura de certificados letsencrypt:
 
 Vemos dos certificados uno generado con la opccion --nginx para el subdominio metarestaurante.ajamam.es y otro para el dominio fernandezlucena.es que nos sirve para los servidores de email.
 
-```
+```consola
 sudo tree -r /etc/letsencrypt 
 
 /etc/letsencrypt
@@ -250,19 +298,19 @@ sudo tree -r /etc/letsencrypt
                 └── meta.json
 ```
 
-`Para eliminar un certificado`
+Para eliminar un certificado
 
 ```
 certbot delete --cert-name mywebsite.com
 ```
 
-`Parar la renovación de un certificado sin eliminarlo`
+Parar la renovación de un certificado sin eliminarlo
 
-  ```
+  ``` consola
   mv /etc/letsencrypt/renew/<cert-name>.conf  /etc/letsencrypt/renew/<cert-name>.conf.disabled
   ```
 
-`Chequear los timers de certbot`
+Chequear los timers de certbot
 
 ```text
 systemctl list-timers
@@ -271,7 +319,8 @@ NEXT                        LEFT          LAST                        PASSED    
 Sat 2023-12-09 05:21:31 CET 6h left       Fri 2023-12-08 19:37:15 CET 3h 17min ago certbot.timer                 certbot.service
 
 ```
-`Para ver el estado del servicio`
+
+Para ver el estado del servicio
 
 ```text
 antonio@ajamam:~$ sudo systemctl status certbot.service
@@ -291,7 +340,7 @@ Dec 08 19:37:16 ajamam systemd[1]: Finished Certbot.
 Dec 08 19:37:16 ajamam systemd[1]: certbot.service: Consumed 1.360s CPU time.
 ```
 
-`Para ver la configuración del servicio certbot.service`
+Para ver la configuración del servicio certbot.service
 
 ```text
 antonio@ajamam:~$ sudo cat /lib/systemd/system/certbot.service
@@ -305,7 +354,7 @@ ExecStart=/usr/bin/certbot -q renew
 PrivateTmp=true
 ```
 
-`La configuración del timer`
+La configuración del timer
 
 ```
 antonio@ajamam:~$ sudo cat /lib/systemd/system/certbot.timer
@@ -318,14 +367,16 @@ RandomizedDelaySec=43200
 Persistent=true
 ```
 
+Mostrar los resultado de la renovación de certificdos
 
-`Mostrar los resultado de la renovación de certificdos`
 ```text
 sudo journalctl --follow -u certbot --since "2023-12-11 16:10:00"
+
+sudo tail -f -n 300 /var/log/letsencrypt/letsencrypt.log
 ```
 
 ## Certificados para web y email de Ionos
-   
+
    El certificado wildcard porporcionado por Ionos es válido para web y para email. Utilizando letsencrypt con cerbot, se ha tenido que generar un certificado wildcar para web *.dominio.es y otro para postfix y dovecot.
 
    Desde la página de ionos, hacemos download de la clave privada (dominio-cert-ssl-private.key) y luego del certificado para el cominio *.ajamam.es (dominio-cert-ssl.cer), y el certificado de la CA (dominio-cert-ssl-CA.cer).
@@ -350,6 +401,7 @@ dominio-cert-ssl-private.key = _.ajamam.es_private_key.key
 dominio-cert-ssl.cer = ajamam.es_ssl_certificate.cer
 
 `Generamos el p12 utilizado por la aplicacion spring REST:`
+
 ```
    openssl pkcs12 -export -in /home/antonio/certificados/dominio-cert-ssl.cer \
                -inkey /home/antonio/certificados/dominio-cert-ssl-private.key \
@@ -359,7 +411,7 @@ dominio-cert-ssl.cer = ajamam.es_ssl_certificate.cer
                -caname caname
 ```
 
-## Instalacioón y configuración del correo electrónico
+# Instalacioón y configuración del correo electrónico
 
 **Postfix**
 
@@ -375,6 +427,7 @@ sudo dpkg-reconfigure postfix
 ```
 
 `Ficheros de postfix a modificar`
+
 ```
 /etc/postfix/main.cf
 /etc/postfix/master.cf
@@ -410,10 +463,10 @@ El registro SPF (Marco de políticas del remitente) especifica qué hosts o dire
 ```
 TXT  @   v=spf1 mx ~all
 ```
+
 ~all indicamos que solo tener en cuenta la ip del servidor de correo
 
 **Queda pendiente de aplicar en servidor, la gestión de la política SPF para correos entrantes. Ir a la explicación extendida.**
-
 
 DKIM (DomainKeys Identified Mail) utiliza una clave privada para agregar una firma a los correos electrónicos enviados desde su dominio . Los servidores SMTP receptores verifican la firma utilizando la clave pública correspondiente, que está publicada en su administrador de DNS.
 
@@ -424,7 +477,7 @@ sudo apt install opendkim opendkim-tools
 ```
 
 Adaptar ficheros de configuracion:
-​    
+​
 
 ​    /etc/dovecot/conf.d/10-auth.conf
 
@@ -446,7 +499,7 @@ Abrir puertos:
 sudo systemctl status postfix
 ```
 
-`Ver la configuarción de postfix' 
+`Ver la configuarción de postfix`
 
 ```console
 sudo postconf
@@ -511,6 +564,7 @@ postcat -q ID-Correo
 ```
 postsuper -d ALL
 ```
+
 status
 `Eliminar todos los correos devueltos`
 
@@ -518,12 +572,11 @@ status
 postsuper -d ALL deferred
 ```
 
-
 `Comprobación de calidad de nuestros correos`
 
 [En este enlace puedes hacer la evalucación](https://www.mail-tester.com/)
 
-## Servicios systemctl
+# Servicios systemctl
 
 - generar el servicio systemctl, para ello creamos el archivo
   etc/systemd/system/aflcv-service.service:
@@ -544,7 +597,6 @@ postsuper -d ALL deferred
 
 Esta app es un spring boot al que se le asigna un keystore.p12, por tanto  el front de angular puede solicitar los servicios con:
 GET "<https://restaurante-back.fernandezlucena.es:8084/api/pedido/1>" (SSL). Los mensajes https (TLS) desde el front no necesinta de ningún reverse proxi de nginx.
-
 
   ***Parada y arranque de servicios***
 
@@ -731,7 +783,7 @@ También habría que añadir keystore.p12 (para https)
 •    21 directories, 70 files
 ```
 
-## Instalacion del front (sin universal)
+# Instalacion del front (sin universal)
 
 Creamos dist para producción (**npm run – ng build –prod**)
 En \home\antonio\www\restaurante-front creamos un carpetas con nombre
@@ -826,7 +878,7 @@ antonio@fernandezlucena:~/www/restaurante-front$ **tree -I node_modules**:
         └── styles.b4ddf2dbc5795ba15b24.css
 ```
 
-## Instalacion del front (con universal)
+# Instalacion del front (con universal)
 
 [explicación de universal](https://www.ganatan.com/tutorials/server-side-rendering-with-angular-universal)
 

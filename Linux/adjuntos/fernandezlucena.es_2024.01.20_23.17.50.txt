@@ -1,0 +1,53 @@
+$ORIGIN fernandezlucena.es.
+$TTL 3600
+fernandezlucena.es.                    3600  IN SOA   (
+                                                      ns1.serviciodns.es.        ; MNAME
+                                                      hostmaster.serviciodns.es. ; RNAME
+                                                      2023121201                 ; SERIAL
+                                                      10800                      ; REFRESH
+                                                      3600                       ; RETRY
+                                                      604800                     ; EXPIRE
+                                                      3600                       ; MINIMUM
+                                                      )
+
+; NS RECORDS
+fernandezlucena.es.                    3600  IN NS    ps1.hostinet.com
+fernandezlucena.es.                    3600  IN NS    ps2.hostinet.com
+
+; A RECORDS
+correo.fernandezlucena.es.             14400 IN A     85.208.22.160
+fernandezlucena.es.                    14400 IN A     85.208.22.160
+
+; CNAME RECORDS
+aflcv-back.fernandezlucena.es.         86400 IN CNAME fernandezlucena.es
+aflcv.fernandezlucena.es.              86395 IN CNAME fernandezlucena.es
+metarestaurante.fernandezlucena.es.    86400 IN CNAME fernandezlucena.es
+restaurante.fernandezlucena.es.        86400 IN CNAME fernandezlucena.es
+
+; MX RECORDS
+fernandezlucena.es.                    14400 IN MX    7 fernandezlucena.es
+
+; TXT RECORDS
+_acme-challenge.fernandezlucena.es.    14400 IN TXT   "jAQk24-K6jEXIgDy4vEtW01eHuodjH1CdFguUSfoghQ"
+_dmarc.fernandezlucena.es.             14401 IN TXT   ( 
+                                                        "v=DMARC1;p=none;pct=100;rua=mailto:info@"
+                                                        "fernandezlucena.es"
+                                                      )
+default._domainkey.fernandezlucena.es. 14400 IN TXT   ( 
+                                                        "v=DKIM1; h=sha256;k=rsa;p=MIIBIjANBgkqhk"
+                                                        "iG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAr+P9PU+/Zs"
+                                                        "tFcs4FDJquaatBgJsUrKqaOldxbiegrtL/LXWm/F"
+                                                        "9weaY08+kXzb0rPRYepfu/58eS5nXobcMGrbMkgi"
+                                                        "8sTSNJVjW7whAmF3uVCHGASlAZr+68EVtYtIQXNu"
+                                                        "cxNJAfquPnqAqbS3yn+f+C3/Gl0RMV7tUzVr7o+K"
+                                                        "BuK7yaKRwdzu+ln Okfh0ThLtPaCSpJzZVUVcl5d"
+                                                        "V9Q4qFNqUMxGRsMzrY30fIcbtZNSSGQ21/qP0jeA"
+                                                        "LOqF/4OpmatNr5VPtLS99bo9omZj4+Ljx79pF+cH"
+                                                        "CI1kbWL/Qb5nMYCv+LEZxYuVdJCZZ6+m6FvkD/SV"
+                                                        "ttFzXPmGxQ3SwIDAQAB"
+                                                      )
+fernandezlucena.es.                    14400 IN TXT   ( 
+                                                        "google-site-verification=7B7TnWYzxDtVU8C"
+                                                        "lXJJO7sBfgyJMvCNVHlQ20RhoXtQ"
+                                                      )
+fernandezlucena.es.                    14400 IN TXT   "v=spf1 mx a ip4:85.208.22.160 ?all"
